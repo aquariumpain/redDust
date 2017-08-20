@@ -28,6 +28,7 @@ body {
 
 .buy {
   display: flex;
+  flex-wrap: wrap;
 }
 
 button {
@@ -116,4 +117,22 @@ button:hover {
 }
 #consoleText p::first-letter {
   color: var(--marsRed);
+}
+
+.nonMobile {
+  visibility: hidden;
+  position: fixed;
+  background-color: var(--color2);
+  color: var(--marsRed);
+  text-align: center;
+  padding-top: 100px;
+  font-size: 2em;
+  height: 100vh;
+  width: 100%;
+  z-index: 2;
+}
+
+@media only screen and (max-width: 700px) {
+  .nonMobile { visibility: visible; }
+
 }
