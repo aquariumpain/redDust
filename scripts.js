@@ -81,6 +81,8 @@ farm.addEventListener('click', () => {
   energy.buy(80, -1, 0);
   credits.rate++;
   population.cap += 2;
+
+  pop.innerHTML = `${population.value} / ${population.cap}`;
 });
 
 // Interval runs each second
@@ -94,7 +96,9 @@ setInterval(() => {
 // Shifted down so hours are seconds
 setInterval(() => {
   addSol();
-  population.value += population.rate;
-  pop.innerHTML = population.value;
+  if (population.value < population.cap) population.value += population.rate;
+  else population.value = population.cap;
+
+  pop.innerHTML = `${population.value} / ${population.cap}`;
   story();
 }, 24393.5)
