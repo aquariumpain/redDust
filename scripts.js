@@ -3,55 +3,70 @@ const content = document.getElementById('consoleText');
 // Buttons
 const solar = document.getElementById('solar');
 const battery = document.getElementById('battery');
+const farm = document.getElementById('farm');
 
 // Resource Elements
-const credits = document.getElementById('credits');
-const population = document.getElementById('population');
+const creds = document.getElementById('credits');
+const pop = document.getElementById('population');
 const nrg = document.getElementById('energy');
 
 class Resource {
-  constructor(initVal, initCap, initRate, cost) {
+  constructor(initVal, initRate, initCap) {
     this.value = initVal;
-    this.cap = initCap;
     this.rate = initRate;
-    this.cost = cost;
+    this.cap = initCap;
   }
 
-  buy(rate, cap) {
-    if (cred >= this.cost) {
-      cred -= this.cost;
+  buy(cost, rate, cap) {
+    if (credits.value >= cost) {
+      credits.value -= cost;
       this.rate += rate;
       this.cap += cap;
+      
+      creds.innerHTML = credits.value;
     }
   }
 }
 
-// Set starting values
+class Currency {
+  constructor(initVal, initRate) {
+    this.value = initVal;
+    this.rate = initRate;
+  }
+}
+
+// Set Starting Values
 let sol = 1;
-let energy = new Resource(0, 50, 1, 15);
-let cred = 0;
-let pop = 50;
+let credits = new Currency(0, 1);
+let population = new Resource(5, 1, 10);
 
-//Set starting rates and caps
-let credRate = 1;
+// Initialize Resources
+let energy = new Resource(10, 1, 50);
 
-
-// Adds resources
+// Adds Resources
 function addResources() {
-  cred += credRate;
+  credits.value += credits.rate;
   if (energy.value < energy.cap) energy.value += energy.rate;
   if (energy.value > energy.cap) energy.value = energy.cap;
+  if (energy.value < 0) energy.value = 0;
+  if (energy.value < 10) {
+    population.rate = 0;
+    credits.rate /= 2;
+    document.documentElement.style.setProperty('--color2', '#A0A0A0');
+  }
+  if (energy.value > 10) document.documentElement.style.setProperty('--color2', '#D7D7D7');
 
-  credits.innerHTML = cred;
+  creds.innerHTML = Math.floor(credits.value);
   nrg.innerHTML = `${energy.value} / ${energy.cap}`;
 }
 
 // Adds Sol
 function addSol() {
   sol++;
-  document.getElementById('sol').innerHTML = sol;
+  document.getElementById('sol').innerHTML = `Sol ${sol}`;
 }
 
+// Scripted Story
 function story() {
   if (sol == 2) {
     content.innerHTML += '<p>$ You have made it through the first day!</p>';
@@ -60,14 +75,18 @@ function story() {
 }
 
 // Button Event Listeners
-solar.addEventListener('click', () => energy.buy(1, 0));
-battery.addEventListener('click', () => energy.buy(0, 15))
+solar.addEventListener('click', () => energy.buy(50, 1, 0));
+battery.addEventListener('click', () => energy.buy(25, 0, 15));
+farm.addEventListener('click', () => {
+  energy.buy(80, -1, 0);
+  credits.rate++;
+  population.cap += 2;
+});
 
 // Interval runs each second
 // Resource gain
 setInterval(() => {
   addResources();
-  console.log(energy.rate);
 }, 1000)
 
 // Sol Interval
@@ -75,5 +94,7 @@ setInterval(() => {
 // Shifted down so hours are seconds
 setInterval(() => {
   addSol();
+  population.value += population.rate;
+  pop.innerHTML = population.value;
   story();
 }, 24393.5)

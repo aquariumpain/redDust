@@ -1,12 +1,11 @@
 :root {
   --color1: #424242;
-  --color2: #B1B1B1;
+  --color2: #D7D7D7;
   --marsRed: #814841;
 }
 
 body {
   margin: 0;
-  background-color: #6D6D6D;
   font-family: 'Titillium Web';
 }
 
@@ -36,6 +35,7 @@ button {
   background-color: var(--marsRed);
   border: 1px solid var(--color1);
   padding: 10px 20px;
+  margin: 10px;
 }
 
 button:hover {
@@ -71,8 +71,13 @@ button:hover {
 
 .titleBar {
   background-color: var(--marsRed);
-  padding: 0 5px;
+  display: flex;
+  justify-content: space-between;
   height: 25px;
+}
+
+.titleBar > * {
+  margin: 1px 10px;
 }
 
 #consoleText {
