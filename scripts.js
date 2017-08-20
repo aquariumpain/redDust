@@ -1,6 +1,22 @@
 const content = document.getElementById('consoleText');
 const buyButtons = document.querySelectorAll('buyButton');
 
+function loadJSON(callback) {
+  let xobj = new XMLHttpRequest();
+  xobj.overrideMimeType('application/json');
+  xobj.open('GET', 'https://apjohns.github.io/redDust/buyables.json', true);
+  xobj.onreadystatechange = () => {
+    if (xobj.readyState == 4 && xobj.status == '200') {
+      xobj.responseType('json');
+      callback(xobj.response);
+    }
+  };
+  xobj.send(null);
+}
+
+const buyables = loadJSON((response) => response);
+
+
 // Buttons
 const solar = document.getElementById('solar');
 const battery = document.getElementById('battery');
@@ -12,7 +28,10 @@ const creds = document.getElementById('credits');
 const pop = document.getElementById('population');
 const nrg = document.getElementById('energy');
 
-// Resource class
+// Buyable JSON
+
+
+// Resource Class
 class Resource {
   constructor(initVal, initRate, initCap) {
     this.value = initVal;
@@ -174,3 +193,5 @@ setInterval(() => {
   events();
   story();
 }, 24393.5)
+
+console.log(buyables.battery.cost);

@@ -1,0 +1,54 @@
+{
+  "solar": {
+    "cost": 60,
+    "rates": {
+      "credits": 0,
+      "energy": 1,
+      "research": 0,
+      "population": 0
+    },
+    "caps": {
+      "energy": 0,
+      "population": 0
+    }
+  },
+  "battery": {
+    "cost": 25,
+    "rates": {
+      "credits": 0,
+      "energy": 0,
+      "research": 0,
+      "population": 0
+    },
+    "caps": {
+      "energy": 5,
+      "population": 0
+    }
+  },
+  "farm": {
+    "cost": 80,
+    "rates": {
+      "credits": 0,
+      "energy": -1,
+      "research": 0,
+      "population": 0
+    },
+    "caps": {
+      "energy": 0,
+      "population": 4
+    }
+  },
+  "lab": {
+    "cost": 100,
+    "rates": {
+      "credits": 0,
+      "energy": -2,
+      "research": 1,
+      "population": 0
+    },
+    "caps": {
+      "energy": 0,
+      "population": 0
+    }
+  }
+}
