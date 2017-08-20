@@ -17,18 +17,20 @@ class Resource {
     this.rate = initRate;
     this.cap = initCap;
   }
-}
 
-class Currency {
-  constructor(initVal, initRate) {
-    this.value = initVal;
-    this.rate = initRate;
+  // Temporarily changes a rate for a given amount of time
+  tmpChange(amount, time) {
+    let hold = this.rate;
+    this.rate = amount;
+    setTimeout(() => {
+      this.rate = hold;
+    }, time);
   }
 }
 
 // Set Starting Values
 let sol = 1;
-let credits = new Currency(0, 0.5);
+let credits = new Resource(0, 0.5, 0);
 let population = new Resource(5, 1, 10);
 
 // Initialize Resources
@@ -47,7 +49,6 @@ function alertTxt(input, num = 0) {
   }
 }
 
-
 let tmpPopRate = population.rate;
 let wasChanged = false;
 // Adds Resources
@@ -55,28 +56,26 @@ function addResources() {
   let lowEnergy = energy.cap / 5;
   credits.value += credits.rate;
 
+  // Energy
   if (energy.value <= energy.cap) energy.value += energy.rate;
   if (energy.value > energy.cap) energy.value = energy.cap;
   if (energy.value < 0) energy.value = 0;
   // If energy drops below lowEnergy
   if (energy.value < lowEnergy) {
-    if (wasChanged == false) {
-      tmpPopRate = population.rate;
-      population.rate = 0;
-      credits.rate /= 2;
+    population.tmpChange(0, 1000);
+    credits.tmpChange(credits.rate / 2, 1000);
+
+    // Prints alert once and won't print again until energy re-drops below lowEnergy
+    if (!wasChanged) {
       alertTxt('low energy');
+      wasChanged = true;
     }
-    wasChanged = true;
     document.documentElement.style.setProperty('--color2', '#888');
   }
   // If energy rises back above lowEnergy
   if (energy.value > lowEnergy) {
-    if (wasChanged == true) {
-      population.rate = tmpPopRate;
-      credits.rate *= 2;
-    }
-    document.documentElement.style.setProperty('--color2', '#D7D7D7');
     wasChanged = false;
+    document.documentElement.style.setProperty('--color2', '#D7D7D7');
   }
 
   creds.innerHTML = Math.floor(credits.value);
@@ -89,6 +88,7 @@ function addSol() {
   document.getElementById('sol').innerHTML = `Sol ${sol}`;
 }
 
+// Checks if the player has enough credits for purchase
 function canAfford(cost) {
   if (cost > credits.value) {
     alertTxt('not afford');
@@ -105,8 +105,22 @@ function canAfford(cost) {
 // Scripted Story
 function story() {
   if (sol == 2) {
-    content.innerHTML += '<p>$ You have made it through the first day!</p>';
+    content.innerHTML += `<p>$ You watch the sun set on hazy red horizon. You've made it through the first day. In the morning a shuttle arrives with new people.</p>`;
     content.scrollTop = content.scrollHeight;
+  }
+}
+
+// Returns a random number between its two arguments [min, max)
+function getRand(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+// Generates random events
+function events() {
+  chance = getRand(1, 15);
+  if (chance == 1) {
+    content.innerHTML += `<p>$ A dust storm rolls in. Everyone retreats back into the base. The storm coats the solar panels in dust. It will take most of the sol to clear them.</p>`;
+    energy.tmpChange(0, 10000);
   }
 }
 
@@ -149,5 +163,6 @@ setInterval(() => {
   credits.rate = population.value / 10;
 
   pop.innerHTML = `${population.value} / ${population.cap}`;
+  events();
   story();
 }, 24393.5)
