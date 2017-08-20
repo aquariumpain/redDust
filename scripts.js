@@ -28,7 +28,6 @@ class Currency {
 
 // Set Starting Values
 let sol = 1;
-let tmpRate = 1;
 let credits = new Currency(0, 0.5);
 let population = new Resource(5, 1, 10);
 
@@ -47,13 +46,14 @@ let tmpPopRate = population.rate;
 let wasChanged = false;
 // Adds Resources
 function addResources() {
-  if (credits.rate > 0) tmpRate = credits.rate;
+  let lowEnergy = energy.cap / 5;
   credits.value += credits.rate;
+
   if (energy.value <= energy.cap) energy.value += energy.rate;
   if (energy.value > energy.cap) energy.value = energy.cap;
   if (energy.value < 0) energy.value = 0;
-  // If energy drops below 10
-  if (energy.value < 10) {
+  // If energy drops below lowEnergy
+  if (energy.value < lowEnergy) {
     if (wasChanged == false) {
       tmpPopRate = population.rate;
       population.rate = 0;
@@ -63,8 +63,8 @@ function addResources() {
     wasChanged = true;
     document.documentElement.style.setProperty('--color2', '#888');
   }
-  // If energy rises back above 10
-  if (energy.value > 10) {
+  // If energy rises back above lowEnergy
+  if (energy.value > lowEnergy) {
     if (wasChanged == true) {
       population.rate = tmpPopRate;
       credits.rate *= 2;
@@ -87,6 +87,7 @@ function canAfford(cost) {
   if (cost > credits.value) return false;
   else {
     credits.value -= cost;
+    creds.innerHTML = Math.floor(credits.value);
     return true;
   }
 }
