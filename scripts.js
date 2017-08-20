@@ -37,26 +37,38 @@ class Currency {
 
 // Set Starting Values
 let sol = 1;
+let tmpRate = 1;
 let credits = new Currency(0, 1);
 let population = new Resource(5, 1, 10);
 
 // Initialize Resources
 let energy = new Resource(10, 1, 50);
 
+let wasChanged = false;
 // Adds Resources
 function addResources() {
+  if (credits.rate > 0) tmpRate = credits.rate;
   credits.value += credits.rate;
-  if (energy.value < energy.cap) energy.value += energy.rate;
+  if (energy.value <= energy.cap) energy.value += energy.rate;
   if (energy.value > energy.cap) energy.value = energy.cap;
   if (energy.value < 0) energy.value = 0;
+  // If energy drops below 10
   if (energy.value < 10) {
-    population.rate = 0;
-    credits.rate /= 2;
-    document.documentElement.style.setProperty('--color2', '#A0A0A0');
+    if (wasChanged == false) {
+      credits.rate /= 2;
+    }
+    wasChanged = true;
+    population.value = population.value;
+    document.documentElement.style.setProperty('--color2', '#888');
   }
-  if (energy.value > 10) document.documentElement.style.setProperty('--color2', '#D7D7D7');
+  // If energy rises back above 10
+  if (energy.value > 10) {
+    if (wasChanged == true) credits.rate *= 2;
+    document.documentElement.style.setProperty('--color2', '#D7D7D7');
+    wasChanged = false;
+  }
 
-  creds.innerHTML = Math.floor(credits.value);
+  creds.innerHTML = credits.value;
   nrg.innerHTML = `${energy.value} / ${energy.cap}`;
 }
 
@@ -78,7 +90,8 @@ function story() {
 solar.addEventListener('click', () => energy.buy(50, 1, 0));
 battery.addEventListener('click', () => energy.buy(25, 0, 15));
 farm.addEventListener('click', () => {
-  energy.buy(80, -1, 0);
+  energy.buy(5, -1, 0);
+  energy.value--;
   credits.rate++;
   population.cap += 2;
 
