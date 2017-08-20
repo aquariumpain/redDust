@@ -87,6 +87,7 @@ button:hover {
 .res {
   flex: 1;
   text-align: center;
+  line-height: 0.65em;
 }
 
 .events {
