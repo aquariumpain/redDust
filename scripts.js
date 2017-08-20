@@ -17,16 +17,6 @@ class Resource {
     this.rate = initRate;
     this.cap = initCap;
   }
-
-  buy(cost, rate, cap) {
-    if (credits.value >= cost) {
-      credits.value -= cost;
-      this.rate += rate;
-      this.cap += cap;
-      
-      creds.innerHTML = credits.value;
-    }
-  }
 }
 
 class Currency {
@@ -45,6 +35,14 @@ let population = new Resource(5, 1, 10);
 // Initialize Resources
 let energy = new Resource(10, 1, 50);
 
+// Event window alert messages
+function alertTxt(input) {
+  if (input == 'low energy') {
+    content.innerHTML += '<p>$ ALERT: Low power! Non-essential systems shut down. Emergency power routed to life support systems.</p>';
+  }
+}
+
+
 let tmpPopRate = population.rate;
 let wasChanged = false;
 // Adds Resources
@@ -60,6 +58,7 @@ function addResources() {
       tmpPopRate = population.rate;
       population.rate = 0;
       credits.rate /= 2;
+      alertTxt('low energy');
     }
     wasChanged = true;
     document.documentElement.style.setProperty('--color2', '#888');
@@ -84,6 +83,14 @@ function addSol() {
   document.getElementById('sol').innerHTML = `Sol ${sol}`;
 }
 
+function canAfford(cost) {
+  if (cost > credits.value) return false;
+  else {
+    credits.value -= cost;
+    return true;
+  }
+}
+
 // Scripted Story
 function story() {
   if (sol == 2) {
@@ -93,14 +100,23 @@ function story() {
 }
 
 // Button Event Listeners
-solar.addEventListener('click', () => energy.buy(50, 1, 0));
-battery.addEventListener('click', () => energy.buy(25, 0, 15));
+solar.addEventListener('click', () => {
+  if (canAfford(60)) {
+    energy.rate += 1;
+  }
+});
+battery.addEventListener('click', () => {
+  if (canAfford(25)) {
+    energy.cap += 5;
+  }
+});
 farm.addEventListener('click', () => {
-  energy.buy(80, -1, 0);
-  energy.value--;
-  population.cap += 2;
-
-  pop.innerHTML = `${population.value} / ${population.cap}`;
+  if (canAfford(80)) {
+    energy.value--;
+    energy.rate--;
+    population.cap += 10;
+    pop.innerHTML = `${population.value} / ${population.cap}`;
+  }
 });
 
 /**************** Intervals ****************/
