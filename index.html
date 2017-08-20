@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Red Dust</title>
+
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro|Titillium+Web" rel="stylesheet">
+</head>
+<body>
+
+  <div class="wrapper">
+
+    <!-- Control Buttons -->
+    <div class="control">
+      <h1>Red Dust</h1>
+
+      <!-- Buy -->
+      <h3 class="title">Buy</h3>
+      <div class="buttons">
+        <button id="solar">Solar Panel 15&cent;</button>
+        <button id="battery">Battery 15&cent;</button>
+      </div>
+    </div>
+
+    <!-- Events Console -->
+    <div class="console">
+      <!-- Resources -->
+      <div class="resources">
+        <div class="res">
+          <h3>Population</h3>
+          <span id="population">50</span>
+        </div>
+
+        <div class="res">
+          <h3>Credits</h3>
+          <span id="credits">0</span>
+        </div>
+
+        <div class="res">
+          <h3>Energy</h3>
+          <span id="energy">0 / 50</span>
+        </div>
+      </div>
+      <!-- Events -->
+      <div class="events">
+        <div class="titleBar">
+          <h3>Sol <span id="sol">1</span></h3>
+        </div>
+        <div id="consoleText">
+          <p>
+            $ The landing module jolts as the retro-rockets activate. You had forgtten just how much everything shook during the final descent. With a second jolt, everyhting became quiet and still again. You look out the small round window to your right, only to see nothing but a cloud of red dust that had been kicked up from the landing.
+          </p>
+          <span id="last"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="text/javascript" src="scripts.js"></script>
+  
+</body>
+</html>
