@@ -1,21 +1,5 @@
 const content = document.getElementById('consoleText');
-const buyButtons = document.querySelectorAll('buyButton');
-
-function loadJSON(callback) {
-  let xobj = new XMLHttpRequest();
-  xobj.overrideMimeType('application/json');
-  xobj.open('GET', 'https://apjohns.github.io/redDust/buyables.json', true);
-  xobj.onreadystatechange = () => {
-    if (xobj.readyState == 4 && xobj.status == '200') {
-      xobj.responseType('json');
-      callback(xobj.response);
-    }
-  };
-  xobj.send(null);
-}
-
-const buyables = loadJSON((response) => response);
-
+const tooltips = document.querySelectorAll('.tooltipText');
 
 // Buttons
 const solar = document.getElementById('solar');
@@ -28,8 +12,7 @@ const creds = document.getElementById('credits');
 const pop = document.getElementById('population');
 const nrg = document.getElementById('energy');
 
-// Buyable JSON
-
+let sol = 1;
 
 // Resource Class
 class Resource {
@@ -49,7 +32,51 @@ class Resource {
   }
 }
 
-let sol = 1;
+// Buyable Class
+class Buyable {
+  constructor(cost, rates, caps) {
+    this.cost = cost;
+    this.rates = rates; // [credits, energy, research, population]
+    this.caps = caps; // [energy, population]
+  }
+
+  buy() {
+    if (credits.value >= this.cost) {
+      credits.value -= this.cost;
+
+      credits.rate += this.rates[0];
+      energy.rate += this.rates[1];
+      research.rate += this.rates[2];
+      population.rate += this.rates[3];
+
+      energy.cap += this.caps[0];
+      population.cap += this.caps[1];
+
+      alertTxt('buy', this.cost);
+      creds.innerHTML = Math.floor(credits.value);
+      pop.innerHTML = `${population.value} / ${population.cap}`;
+    } else alertTxt('not afford');
+  }
+}
+
+// Initialize Buyable Objects
+let objSolar = new Buyable(60,
+  [0, 1, 0, 0],
+  [0, 0]
+);
+let objBattery = new Buyable(25,
+  [0, 0, 0, 0],
+  [5, 0]
+);
+let objFarm = new Buyable(80,
+  [0, -1, 0, 0],
+  [0, 4]
+);
+let objLab = new Buyable(100,
+  [0, -2, 1, 0],
+  [0, 0]
+);
+
 // Initialize Resources
 let energy = new Resource(10, 1, 50);
 let credits = new Resource(0, 0.5, 0);
@@ -125,7 +152,7 @@ function canAfford(cost) {
 // Scripted Story
 function story() {
   if (sol == 2) {
-    content.innerHTML += `<p>$ Sol 2: You watch the sun set on hazy red horizon. You've made it through the first day. In the morning a shuttle arrives with new people.</p>`;
+    content.innerHTML += `<p>$ Sol 2: You watch the sun set on a hazy red horizon. You've made it through the first day. In the morning a shuttle arrives with new people.</p>`;
     content.scrollTop = content.scrollHeight;
   }
 }
@@ -145,30 +172,10 @@ function events() {
 }
 
 // Button Event Listeners
-solar.addEventListener('click', () => {
-  if (canAfford(60)) {
-    energy.rate += 1;
-  }
-});
-battery.addEventListener('click', () => {
-  if (canAfford(25)) {
-    energy.cap += 5;
-  }
-});
-farm.addEventListener('click', () => {
-  if (canAfford(80)) {
-    energy.value--;
-    energy.rate--;
-    population.cap += 4;
-    pop.innerHTML = `${population.value} / ${population.cap}`;
-  }
-});
-lab.addEventListener('click', () => {
-  if (canAfford(100)) {
-    research.rate++;
-    energy.rate -= 2;
-  }
-});
+solar.addEventListener('click', () => objSolar.buy());
+battery.addEventListener('click', () => objBattery.buy());
+farm.addEventListener('click', () => objFarm.buy());
+lab.addEventListener('click', () => objLab.buy());
 
 /**************** Intervals ****************/
 
@@ -192,6 +199,4 @@ setInterval(() => {
   pop.innerHTML = `${population.value} / ${population.cap}`;
   events();
   story();
-}, 24393.5)
-
-console.log(buyables.battery.cost);
+}, 24393.5);
