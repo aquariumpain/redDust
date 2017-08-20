@@ -35,9 +35,15 @@ let population = new Resource(5, 1, 10);
 let energy = new Resource(10, 1, 50);
 
 // Event window alert messages
-function alertTxt(input) {
+function alertTxt(input, num = 0) {
   if (input == 'low energy') {
     content.innerHTML += '<p>$ ALERT: Low power! Non-essential systems shut down. Emergency power routed to life support systems.</p>';
+  }
+  if (input == 'not afford') {
+    content.innerHTML += '<p>$ ALERT: Not enough Credits!</p>';
+  }
+  if (input == 'buy') {
+    content.innerHTML += `<p>$ ALERT: Thank you for your purchase! ${num}&cent; deducted from balance!</p>`;
   }
 }
 
@@ -84,8 +90,12 @@ function addSol() {
 }
 
 function canAfford(cost) {
-  if (cost > credits.value) return false;
+  if (cost > credits.value) {
+    alertTxt('not afford');
+    return false;
+  }
   else {
+    alertTxt('buy', cost);
     credits.value -= cost;
     creds.innerHTML = Math.floor(credits.value);
     return true;
