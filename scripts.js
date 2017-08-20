@@ -1,4 +1,5 @@
 const content = document.getElementById('consoleText');
+const buyButtons = document.querySelectorAll('buyButton');
 
 // Buttons
 const solar = document.getElementById('solar');
@@ -38,7 +39,7 @@ class Currency {
 // Set Starting Values
 let sol = 1;
 let tmpRate = 1;
-let credits = new Currency(0, 1);
+let credits = new Currency(0, 0.5);
 let population = new Resource(5, 1, 10);
 
 // Initialize Resources
@@ -95,13 +96,14 @@ function story() {
 solar.addEventListener('click', () => energy.buy(50, 1, 0));
 battery.addEventListener('click', () => energy.buy(25, 0, 15));
 farm.addEventListener('click', () => {
-  energy.buy(5, -1, 0);
+  energy.buy(80, -1, 0);
   energy.value--;
-  credits.rate++;
   population.cap += 2;
 
   pop.innerHTML = `${population.value} / ${population.cap}`;
 });
+
+/**************** Intervals ****************/
 
 // Interval runs each second
 // Resource gain
@@ -116,6 +118,8 @@ setInterval(() => {
   addSol();
   if (population.value < population.cap) population.value += population.rate;
   else population.value = population.cap;
+
+  credits.rate = population.value / 10;
 
   pop.innerHTML = `${population.value} / ${population.cap}`;
   story();
