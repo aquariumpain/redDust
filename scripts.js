@@ -5,12 +5,14 @@ const buyButtons = document.querySelectorAll('buyButton');
 const solar = document.getElementById('solar');
 const battery = document.getElementById('battery');
 const farm = document.getElementById('farm');
+const lab = document.getElementById('lab');
 
 // Resource Elements
 const creds = document.getElementById('credits');
 const pop = document.getElementById('population');
 const nrg = document.getElementById('energy');
 
+// Resource class
 class Resource {
   constructor(initVal, initRate, initCap) {
     this.value = initVal;
@@ -28,13 +30,12 @@ class Resource {
   }
 }
 
-// Set Starting Values
 let sol = 1;
-let credits = new Resource(0, 0.5, 0);
-let population = new Resource(5, 1, 10);
-
 // Initialize Resources
 let energy = new Resource(10, 1, 50);
+let credits = new Resource(0, 0.5, 0);
+let population = new Resource(5, 1, 10);
+let research = new Resource(0, 0, 0);
 
 // Event window alert messages
 function alertTxt(input, num = 0) {
@@ -139,8 +140,14 @@ farm.addEventListener('click', () => {
   if (canAfford(80)) {
     energy.value--;
     energy.rate--;
-    population.cap += 10;
+    population.cap += 4;
     pop.innerHTML = `${population.value} / ${population.cap}`;
+  }
+});
+lab.addEventListener('click', () => {
+  if (canAfford(100)) {
+    research.rate++;
+    energy.rate -= 2;
   }
 });
 
@@ -161,6 +168,7 @@ setInterval(() => {
   else population.value = population.cap;
 
   credits.rate = population.value / 10;
+  research.value += research.rate;
 
   pop.innerHTML = `${population.value} / ${population.cap}`;
   events();
