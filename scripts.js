@@ -118,10 +118,10 @@ function getRand(min, max) {
 
 // Generates random events
 function events() {
-  chance = getRand(1, 15);
+  chance = getRand(1, 30);
   if (chance == 1) {
     content.innerHTML += `<p>$ A dust storm rolls in. Everyone retreats back into the base. The storm coats the solar panels in dust. It will take most of the sol to clear them.</p>`;
-    energy.tmpChange(0, 10000);
+    energy.tmpChange(energy.rate - Math.abs(energy.rate), 10000);
   }
 }
 
