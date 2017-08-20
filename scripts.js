@@ -44,6 +44,7 @@ let population = new Resource(5, 1, 10);
 // Initialize Resources
 let energy = new Resource(10, 1, 50);
 
+let tmpPopRate = population.rate;
 let wasChanged = false;
 // Adds Resources
 function addResources() {
@@ -55,20 +56,24 @@ function addResources() {
   // If energy drops below 10
   if (energy.value < 10) {
     if (wasChanged == false) {
+      tmpPopRate = population.rate;
+      population.rate = 0;
       credits.rate /= 2;
     }
     wasChanged = true;
-    population.value = population.value;
     document.documentElement.style.setProperty('--color2', '#888');
   }
   // If energy rises back above 10
   if (energy.value > 10) {
-    if (wasChanged == true) credits.rate *= 2;
+    if (wasChanged == true) {
+      population.rate = tmpPopRate;
+      credits.rate *= 2;
+    }
     document.documentElement.style.setProperty('--color2', '#D7D7D7');
     wasChanged = false;
   }
 
-  creds.innerHTML = credits.value;
+  creds.innerHTML = Math.floor(credits.value);
   nrg.innerHTML = `${energy.value} / ${energy.cap}`;
 }
 
