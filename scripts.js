@@ -34,7 +34,8 @@ class Resource {
 
 // Buyable Class
 class Buyable {
-  constructor(cost, rates, caps) {
+  constructor(name, cost, rates, caps) {
+    this.name = name;
     this.cost = cost;
     this.rates = rates; // [credits, energy, research, population]
     this.caps = caps; // [energy, population]
@@ -60,19 +61,19 @@ class Buyable {
 }
 
 // Initialize Buyable Objects
-let objSolar = new Buyable(60,
+let objSolar = new Buyable('solar', 60,
   [0, 1, 0, 0],
   [0, 0]
 );
-let objBattery = new Buyable(25,
+let objBattery = new Buyable('battery', 25,
   [0, 0, 0, 0],
   [5, 0]
 );
-let objFarm = new Buyable(80,
+let objFarm = new Buyable('farm', 80,
   [0, -1, 0, 0],
   [0, 4]
 );
-let objLab = new Buyable(100,
+let objLab = new Buyable('lab', 100,
   [0, -2, 1, 0],
   [0, 0]
 );
@@ -135,20 +136,6 @@ function addSol() {
   document.getElementById('sol').innerHTML = `Sol ${sol}`;
 }
 
-// Checks if the player has enough credits for purchase
-function canAfford(cost) {
-  if (cost > credits.value) {
-    alertTxt('not afford');
-    return false;
-  }
-  else {
-    alertTxt('buy', cost);
-    credits.value -= cost;
-    creds.innerHTML = Math.floor(credits.value);
-    return true;
-  }
-}
-
 // Scripted Story
 function story() {
   if (sol == 2) {
@@ -170,6 +157,36 @@ function events() {
     energy.tmpChange(energy.rate - Math.abs(energy.rate), 10000);
   }
 }
+
+// Updates the values in the tooltips
+function updateTips(obj) {
+  const outputRates = [
+    'Credits<br>',
+    'Energy/s<br>',
+    'Research/s<br>',
+    'Pop/s<br>'
+  ];
+  const outputCaps = [
+    'Energy Cap<br>',
+    'Pop Cap<br>'
+  ];
+  let values = `-${obj.cost} Credits<br>`;
+  for (let i = 0; i < obj.rates.length; i++) {
+    if (obj.rates[i] != 0) {
+      values += `${obj.rates[i]} ${outputRates[i]}`;
+    }
+  }
+  for (let i = 0; i < obj.caps.length; i++) {
+    if (obj.caps[i] != 0) {
+      values += `${obj.caps[i]} ${outputCaps[i]}`;
+    }
+  }
+  document.getElementById(obj.name).innerHTML = values;
+}
+updateTips(objSolar);
+updateTips(objBattery);
+updateTips(objFarm);
+updateTips(objLab);
 
 // Button Event Listeners
 solar.addEventListener('click', () => objSolar.buy());
