@@ -2,6 +2,12 @@ const content = document.getElementById('consoleText');
 const tooltips = document.querySelectorAll('.tooltipText');
 
 // Buttons
+const buySolar = document.getElementById('buySolar');
+const buyBattery = document.getElementById('buyBattery');
+const buyFarm = document.getElementById('buyFarm');
+const buyLab = document.getElementById('buyLab');
+
+//Tooltip Text
 const solar = document.getElementById('solar');
 const battery = document.getElementById('battery');
 const farm = document.getElementById('farm');
@@ -189,10 +195,10 @@ updateTips(objFarm);
 updateTips(objLab);
 
 // Button Event Listeners
-solar.addEventListener('click', () => objSolar.buy());
-battery.addEventListener('click', () => objBattery.buy());
-farm.addEventListener('click', () => objFarm.buy());
-lab.addEventListener('click', () => objLab.buy());
+buySolar.addEventListener('click', () => objSolar.buy());
+buyBattery.addEventListener('click', () => objBattery.buy());
+buyFarm.addEventListener('click', () => objFarm.buy());
+buyLab.addEventListener('click', () => objLab.buy());
 
 /**************** Intervals ****************/
 
