@@ -1,5 +1,6 @@
 const content = document.getElementById('consoleText');
 const tooltips = document.querySelectorAll('.tooltipText');
+const mars = document.getElementById('mars');
 
 // Buttons
 const buySolar = document.getElementById('buySolar');
@@ -19,6 +20,8 @@ const pop = document.getElementById('population');
 const nrg = document.getElementById('energy');
 
 let sol = 1;
+let rise = 1;
+let fall = -1;
 
 // Resource Class
 class Resource {
@@ -52,7 +55,8 @@ class Buyable {
       credits.value -= this.cost;
 
       credits.rate += this.rates[0];
-      energy.rate += this.rates[1];
+      if (this.rates[1] < 0) fall += this.rates[1]
+        else rise += this.rates[1];
       research.rate += this.rates[2];
       population.rate += this.rates[3];
 
@@ -85,7 +89,7 @@ let objLab = new Buyable('lab', 100,
 );
 
 // Initialize Resources
-let energy = new Resource(10, 1, 50);
+let energy = new Resource(11, 1, 50);
 let credits = new Resource(0, 0.5, 0);
 let population = new Resource(5, 1, 10);
 let research = new Resource(0, 0, 0);
@@ -109,19 +113,18 @@ function addResources() {
       credits.tmpChange(credits.rate / 2, 1000);
       alertTxt('low energy');
       wasChanged = true;
-      console.log(wasChanged, population.rate, credits.rate);
     }
     document.documentElement.style.setProperty('--color2', '#888');
   }
   // If energy rises back above lowEnergy
   if (energy.value > lowEnergy) {
     wasChanged = false;
-    console.log(wasChanged, population.rate, credits.rate);
     document.documentElement.style.setProperty('--color2', '#D7D7D7');
   }
 
   creds.innerHTML = Math.floor(credits.value);
   nrg.innerHTML = `${energy.value} / ${energy.cap}`;
+  console.log(energy.rate);
 }
 
 // Adds Sol
@@ -189,3 +192,17 @@ setInterval(() => {
   events();
   story();
 }, 24393.5);
+
+let day = false;
+setInterval(() => {
+  console.log(day);
+  if (day) {
+    energy.rate = rise;
+    mars.style.filter = "brightness(100%)";
+  }
+  else {
+    energy.rate = fall;
+    mars.style.filter = "brightness(25%)";
+  }
+  day = !day;
+}, 12196.75);

@@ -15,7 +15,7 @@ function alertTxt(input, num = 0) {
 // Scripted Story
 function story() {
   if (sol == 2) {
-    content.innerHTML += `<p>$ Sol 2: You watch the sun set on a hazy red horizon. You've made it through the first day. In the morning a shuttle arrives with new people.</p>`;
+    content.innerHTML += `<p>$ Sol 2: You watch the sun rise on a hazy red horizon. You've made it through the first day. A shuttle arrives with new people.</p>`;
     content.scrollTop = content.scrollHeight;
   }
 }

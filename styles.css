@@ -82,12 +82,19 @@ button:hover {
 
 .resources {
   display: flex;
+  align-items: flex-start;
 }
 
 .res {
   flex: 1;
   text-align: center;
   line-height: 0.65em;
+}
+
+#mars {
+  width: 75px;
+  filter: filter(100%);
+  transition: all 12s;
 }
 
 .events {
