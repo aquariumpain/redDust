@@ -103,19 +103,20 @@ function addResources() {
   if (energy.value < 0) energy.value = 0;
   // If energy drops below lowEnergy
   if (energy.value < lowEnergy) {
-    population.tmpChange(0, 1000);
-    credits.tmpChange(credits.rate / 2, 1000);
-
     // Prints alert once and won't print again until energy re-drops below lowEnergy
     if (!wasChanged) {
+      population.tmpChange(0, 1000);
+      credits.tmpChange(credits.rate / 2, 1000);
       alertTxt('low energy');
       wasChanged = true;
+      console.log(wasChanged, population.rate, credits.rate);
     }
     document.documentElement.style.setProperty('--color2', '#888');
   }
   // If energy rises back above lowEnergy
   if (energy.value > lowEnergy) {
     wasChanged = false;
+    console.log(wasChanged, population.rate, credits.rate);
     document.documentElement.style.setProperty('--color2', '#D7D7D7');
   }
 
