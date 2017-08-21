@@ -18,6 +18,7 @@ const lab = document.getElementById('lab');
 const creds = document.getElementById('credits');
 const pop = document.getElementById('population');
 const nrg = document.getElementById('energy');
+const res = document.getElementById('research');
 
 let sol = 1;
 let rise = 1;
@@ -72,25 +73,25 @@ class Buyable {
 }
 
 // Initialize Buyable Objects
-let objSolar = new Buyable('solar', 60,
+let objSolar = new Buyable('solar', 70,
   [0, 1, 0, 0],
   [0, 0]
 );
-let objBattery = new Buyable('battery', 25,
+let objBattery = new Buyable('battery', 90,
   [0, 0, 0, 0],
   [5, 0]
 );
-let objFarm = new Buyable('farm', 80,
+let objFarm = new Buyable('farm', 100,
   [0, -1, 0, 0],
-  [0, 4]
+  [0, 2]
 );
-let objLab = new Buyable('lab', 100,
+let objLab = new Buyable('lab', 150,
   [0, -2, 1, 0],
   [0, 0]
 );
 
 // Initialize Resources
-let energy = new Resource(20, 1, 50);
+let energy = new Resource(15, 1, 50);
 let credits = new Resource(0, 0.5, 0);
 let population = new Resource(5, 1, 10);
 let research = new Resource(0, 0, 0);
@@ -158,16 +159,22 @@ function updateTips(obj) {
   }
   document.getElementById(obj.name).innerHTML = values;
 }
-updateTips(objSolar);
-updateTips(objBattery);
-updateTips(objFarm);
-updateTips(objLab);
 
 // Button Event Listeners
 buySolar.addEventListener('click', () => objSolar.buy());
 buyBattery.addEventListener('click', () => objBattery.buy());
 buyFarm.addEventListener('click', () => objFarm.buy());
 buyLab.addEventListener('click', () => objLab.buy());
+
+/**************** Initial Function Calls ****************/
+updateTips(objSolar);
+updateTips(objBattery);
+updateTips(objFarm);
+updateTips(objLab);
+creds.innerHTML = Math.floor(credits.value);
+res.innerHTML = research.value;
+nrg.innerHTML = `${energy.value} / ${energy.cap}`;
+pop.innerHTML = `${population.value} / ${population.cap}`;
 
 /**************** Intervals ****************/
 
@@ -189,6 +196,7 @@ setInterval(() => {
   research.value += research.rate;
 
   pop.innerHTML = `${population.value} / ${population.cap}`;
+  res.innerHTML = research.value;
   events();
   story();
 }, 24393.5);
