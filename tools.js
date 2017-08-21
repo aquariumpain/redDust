@@ -66,6 +66,7 @@ class Buyable {
       alertTxt('buy', this.cost);
       creds.innerHTML = Math.floor(credits.value);
       pop.innerHTML = `${population.value} / ${population.cap}`;
+      nrg.innerHTML = `${energy.value} / ${energy.cap}`;
     } else alertTxt('not afford');
   }
 }
@@ -89,7 +90,7 @@ let objLab = new Buyable('lab', 100,
 );
 
 // Initialize Resources
-let energy = new Resource(11, 1, 50);
+let energy = new Resource(20, 1, 50);
 let credits = new Resource(0, 0.5, 0);
 let population = new Resource(5, 1, 10);
 let research = new Resource(0, 0, 0);
@@ -124,7 +125,6 @@ function addResources() {
 
   creds.innerHTML = Math.floor(credits.value);
   nrg.innerHTML = `${energy.value} / ${energy.cap}`;
-  console.log(energy.rate);
 }
 
 // Adds Sol
@@ -195,7 +195,6 @@ setInterval(() => {
 
 let day = false;
 setInterval(() => {
-  console.log(day);
   if (day) {
     energy.rate = rise;
     mars.style.filter = "brightness(100%)";
