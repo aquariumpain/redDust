@@ -8,11 +8,15 @@ const buyBattery = document.getElementById('buyBattery');
 const buyFarm = document.getElementById('buyFarm');
 const buyLab = document.getElementById('buyLab');
 
+const upgradeBattery = document.getElementById('batteryUpButton');
+
 //Tooltip Text
 const solar = document.getElementById('solar');
 const battery = document.getElementById('battery');
 const farm = document.getElementById('farm');
 const lab = document.getElementById('lab');
+
+const batUp = document.getElementById('batUp');
 
 // Resource Elements
 const creds = document.getElementById('credits');
@@ -20,6 +24,7 @@ const pop = document.getElementById('population');
 const nrg = document.getElementById('energy');
 const res = document.getElementById('research');
 
+// Other Variables
 let sol = 1;
 let rise = 1;
 let fall = -1;
@@ -160,14 +165,55 @@ function updateTips(obj) {
   document.getElementById(obj.name).innerHTML = values;
 }
 
+solarVals = {
+  id: 'solar',
+  cost: 70,
+  rates: {
+    energy: 1,
+    research: 0,
+    population: 0
+  },
+  caps: {
+    energy: 0,
+    population: 0
+  }
+}
+
+function updateTooltips(item) {
+  let tip = document.getElementById(item.id);
+  tip.innerHTML = `-${item.cost} Credits`;
+  if (item.rates.energy != 0) tip.innerHTML += `<br>${item.rates.energy} Energy/s`;
+  if (item.rates.research != 0) tip.innerHTML += `<br>${item.rates.reseaarch} Research/s`;
+  if (item.rates.population != 0) tip.innerHTML += `<br>${item.rates.population} Pop/s`;
+  if (item.caps.energy != 0) tip.innerHTML += `<br>${item.caps.energy} Total Energy`;
+  if (item.caps.population != 0) tip.innerHTML += `<br>${item.rates.population} Total Pop`;
+}
+
+function buy(item) {
+  if (credits.value >= item.cost) {
+    credits.value -= item.cost;
+
+    if (item.rates.energy > 0) rise += item.rates.energy;
+    else fall += item.rates.energy;
+    research.rate += item.rates.research;
+    population.rate += item.rates.population;
+
+    energy.cap += item.caps.energy;
+    population.cap += item.caps.population;
+
+    updateTooltips(item);
+    alertTxt('buy', item.cost);
+  } else alertTxt('not afford');
+}
+
 // Button Event Listeners
-buySolar.addEventListener('click', () => objSolar.buy());
+buySolar.addEventListener('click', () => buy(solarVals));
 buyBattery.addEventListener('click', () => objBattery.buy());
 buyFarm.addEventListener('click', () => objFarm.buy());
 buyLab.addEventListener('click', () => objLab.buy());
 
 /**************** Initial Function Calls ****************/
-updateTips(objSolar);
+updateTooltips(solarVals);
 updateTips(objBattery);
 updateTips(objFarm);
 updateTips(objLab);
