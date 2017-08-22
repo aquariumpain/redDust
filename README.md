@@ -10,10 +10,15 @@ Resources are used to buy things, keep things running, and unlock items.
 
 ## Purchasable Items
 You can buy things with credits. Items unlock as you gain research points.
-### Current Items
-- Solar Panel: Adds to energy rate
+### Items
+- Solar Panel: Adds to energy rate during the day
 - Battery: Adds to energy cap
 - Potato Farm: Adds to population cap, subtracts from energy rate
+- Labs: Increases research rate, subtracts from energy rate
+- Landing Pad: Increases population rate, subtracts from energy rate
+
+### Upgrades
+- Battery Efficiency: Deecreses the energy fall off rate at night by a defined percent
 
 ## Game Mechanics
 ### Energy
