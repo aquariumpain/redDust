@@ -12,7 +12,7 @@ let rise = 1;
 let fall = -1;
 
 function eventWrite(msg) {
-  document.getElementById('consoleText').innerHTML = `<p>$ Sol ${sol}: ${msg}</p>`;
+  document.getElementById('consoleText').innerHTML += `<p>$ Sol ${sol}: ${msg}</p>`;
 }
 
 let wasChanged = false;
@@ -49,20 +49,45 @@ function addResources() {
 // Unlocks things when conditions are met
 function unlock() {
   if (research.value >= upgradeBattery.unlock) {
-    eventWrite('Your engineers have successfully figured out how to greatly improve the efficiency of our batteries! The energy loss rate over time for each battery has been reduced. We should be able to slow down our energy loss at night!');
+    eventWrite('Your engineers have successfully figured out how to greatly improve the efficiency of our batteries! The energy loss rate over time for each battery has been reduced. We should be able to slow down our energy loss at night! We just need to fund their production now.');
     document.getElementById('upgradeBattery').parentNode.style.visibility = 'visible';
   }
 }
 
+function checkExists(property, isPercent = false) {
+  if (isPercent)
+    if (property == 1) return false;
+  if (property != 0 && property != undefined) return true;
+  else return false;
+}
+
 // Updates Tooltip Values
-function updateTooltips(item) {
+function buyTooltips(item) {
   let tip = document.getElementById(item.id);
   tip.innerHTML = `-${item.cost} Credits`;
-  if (item.rates.energy != 0) tip.innerHTML += `<br>${item.rates.energy} Energy/s`;
-  if (item.rates.research != 0) tip.innerHTML += `<br>${item.rates.research} Research/s`;
-  if (item.rates.population != 0) tip.innerHTML += `<br>${item.rates.population} Pop/s`;
-  if (item.caps.energy != 0) tip.innerHTML += `<br>${item.caps.energy} Total Energy`;
-  if (item.caps.population != 0) tip.innerHTML += `<br>${item.rates.population} Total Pop`;
+  if (checkExists(item.rates.energy))
+    tip.innerHTML += `<br>${item.rates.energy} Energy/s`;
+  if (checkExists(item.rates.research))
+    tip.innerHTML += `<br>${item.rates.research} Research/s`;
+  if (checkExists(item.rates.population))
+    tip.innerHTML += `<br>${item.rates.population} Pop/s`;
+  if (checkExists(item.caps.energy))
+    tip.innerHTML += `<br>${item.caps.energy} Total Energy`;
+  if (checkExists(item.caps.population))
+    tip.innerHTML += `<br>${item.caps.population} Total Pop`;
+}
+
+function upgradeTooltips(item) {
+  let tip = document.getElementById(item.id);
+  tip.innerHTML = `-${item.cost} Credits`;
+  if (checkExists(item.effects.fall, true))
+    tip.innerHTML += `<br>-${(1 - item.effects.fall) * 100}% Energy Fall Rate`;
+  if (checkExists(item.effects.rise, true))
+    tip.innerHTML += `<br>${(1 - item.effects.rise) * 100}% Energy Rise Rate`;
+  if (checkExists(item.effects.research, true))
+    tip.innerHTML += `<br>${(1 - item.effects.research) * 100}% Research Rate`;
+  if (checkExists(item.effects.population, true))
+    tip.innerHTML += `<br>${(1 - item.effects.population) * 100}% Population Rate`;
 }
 
 // Adjusts resources when purchase is made
@@ -82,7 +107,7 @@ function buy(item) {
     showPopulation.innerHTML = `${population.value} / ${population.cap}`;
     showEnergy.innerHTML = `${energy.value} / ${energy.cap}`;
 
-    updateTooltips(item);
+    buyTooltips(item);
     alertTxt('buy', item.cost);
   } else alertTxt('not afford');
 }
@@ -98,7 +123,7 @@ function upgrade(item) {
     showPopulation.innerHTML = `${population.value} / ${population.cap}`;
     showEnergy.innerHTML = `${energy.value} / ${energy.cap}`;
 
-    updateTooltips(item);
+    upgradeTooltips(item);
     alertTxt('buy', item.cost);
   } else alertTxt('not afford');
 }
@@ -152,10 +177,11 @@ setInterval(() => {
 }, 12196.75);
 
 /**************** Initial Function Calls ****************/
-updateTooltips(solarVals);
-updateTooltips(batteryVals);
-updateTooltips(farmVals);
-updateTooltips(labVals);
+buyTooltips(solarVals);
+buyTooltips(batteryVals);
+buyTooltips(farmVals);
+buyTooltips(labVals);
+upgradeTooltips(upgradeBattery);
 showCredits.innerHTML = Math.floor(credits.value);
 showResearch.innerHTML = research.value;
 showEnergy.innerHTML = `${energy.value} / ${energy.cap}`;

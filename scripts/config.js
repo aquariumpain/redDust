@@ -66,7 +66,6 @@ upgradeBattery = {
   id: 'batUp',
   cost: 500,
   unlock: 25,
-  message: 'test',
   effects: { // Percent Of
     fall: 0.75,
     rise: 1,

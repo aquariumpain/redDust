@@ -1,3 +1,5 @@
+const content = document.getElementById('consoleText');
+
 // Event window alert messages
 function alertTxt(input, num = 0) {
   if (input == 'low energy') {
