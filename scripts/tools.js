@@ -18,7 +18,7 @@ function eventWrite(msg) {
 let wasChanged = false;
 // Adds Resources
 function addResources() {
-  let lowEnergy = energy.cap / 5;
+  let lowEnergy = energy.cap / 10;
   credits.value += credits.rate;
 
   // Energy
