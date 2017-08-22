@@ -5,7 +5,7 @@ const population = new Resource(5, 1, 10);
 const research = new Resource(0, 0, 0);
 
 // Buy Values
-solarVals = {
+const solarVals = {
   id: 'solar',
   cost: 70,
   rates: {
@@ -19,7 +19,7 @@ solarVals = {
   }
 }
 
-batteryVals = {
+const batteryVals = {
   id: 'battery',
   cost: 90,
   rates: {
@@ -33,7 +33,7 @@ batteryVals = {
   }
 }
 
-farmVals = {
+const farmVals = {
   id: 'farm',
   cost: 100,
   rates: {
@@ -47,7 +47,7 @@ farmVals = {
   }
 }
 
-labVals = {
+const labVals = {
   id: 'lab',
   cost: 150,
   rates: {
@@ -61,8 +61,22 @@ labVals = {
   }
 }
 
+const padVals = {
+  id: 'pad',
+  cost: 400,
+  rates: {
+    energy: -5,
+    research: 0,
+    population: 2
+  },
+  caps: {
+    energy: 0,
+    population: 0
+  }
+}
+
 // Upgrade Values
-upgradeBattery = {
+const upgradeBattery = {
   id: 'batUp',
   cost: 500,
   unlock: 25,

@@ -133,6 +133,7 @@ document.getElementById('buySolar').addEventListener('click', () => buy(solarVal
 document.getElementById('buyBattery').addEventListener('click', () => buy(battryVals));
 document.getElementById('buyFarm').addEventListener('click', () => buy(farmVals));
 document.getElementById('buyLab').addEventListener('click', () => buy(labVals));;
+document.getElementById('buyPad').addEventListener('click', () => buy(padVals));;
 document.getElementById('upgradeBattery').addEventListener('click', () => upgrade(upgradeBattery));
 
 /**************** Intervals ****************/
@@ -181,6 +182,7 @@ buyTooltips(solarVals);
 buyTooltips(batteryVals);
 buyTooltips(farmVals);
 buyTooltips(labVals);
+buyTooltips(padVals);
 upgradeTooltips(upgradeBattery);
 showCredits.innerHTML = Math.floor(credits.value);
 showResearch.innerHTML = research.value;
