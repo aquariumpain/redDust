@@ -30,6 +30,7 @@ function addResources() {
   if (energy.value < lowEnergy) {
     // Prints alert once and won't print again until energy re-drops below lowEnergy
     if (!wasChanged) {
+      research.tmpChange(0, 1000)
       population.tmpChange(0, 1000);
       credits.tmpChange(credits.rate / 2, 1000);
       alertTxt('low energy');
