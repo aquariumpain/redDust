@@ -20,6 +20,20 @@ function story() {
     eventWrite(`You watch the sun rise on a hazy red horizon. You've made it through the first day. A shuttle arrives with new people.`);
     content.scrollTop = content.scrollHeight;
   }
+  if (sol == 10) {
+    eventWrite(`Systems United has decided to award you 500 credits as a starting bonus.`);
+    credits.value += 500;
+    content.scrollTop = content.scrollHeight;
+  }
+  if (sol == 549) {
+    eventWrite(`Its been 549 sols since the colony started. Mars really feels like home now. How did Mark Watney survive here alone with so few resources for this long in 2037?`);
+    content.scrollTop = content.scrollHeight;
+  }
+  if (sol == 668) {
+    eventWrite(`Today is the one martian year anniversary of the colony! As a reward for making it this far, Systems United has gifted you 500,000 credits to spend as you please!`);
+    credits.value += 500000;
+    content.scrollTop = content.scrollHeight;
+  }
 }
 
 // Returns a random number between its two arguments [min, max)
