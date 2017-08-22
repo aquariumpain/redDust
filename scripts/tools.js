@@ -10,6 +10,7 @@ const showResearch = document.getElementById('research');
 let sol = 1;
 let rise = 1;
 let fall = -1;
+let next = 0; // Used in unlocks function
 
 function eventWrite(msg) {
   document.getElementById('consoleText').innerHTML += `<p>$ Sol ${sol}: ${msg}</p>`;
@@ -48,9 +49,10 @@ function addResources() {
 
 // Unlocks things when conditions are met
 function unlock() {
-  if (research.value >= upgradeBattery.unlock) {
+  if (research.value >= upgradeBattery.unlock && next == 0) {
     eventWrite('Your engineers have successfully figured out how to greatly improve the efficiency of our batteries! The energy loss rate over time for each battery has been reduced. We should be able to slow down our energy loss at night! We just need to fund their production now.');
     document.getElementById('upgradeBattery').parentNode.style.visibility = 'visible';
+    next++;
   }
 }
 
