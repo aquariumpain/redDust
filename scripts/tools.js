@@ -126,6 +126,7 @@ function buy(item) {
 
 function upgrade(item) {
   if (credits.value >= item.cost) {
+    credits.value -= item.cost;
     fall *= item.effects.fall;
     rise *= item.effects.rise;
     research.rate *= item.effects.research;
