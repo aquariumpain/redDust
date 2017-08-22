@@ -45,7 +45,7 @@ function addResources() {
   }
 
   showCredits.innerHTML = Math.floor(credits.value);
-  showEnergy.innerHTML = `${energy.value} / ${energy.cap}`;
+  showEnergy.innerHTML = `${Math.floor(energy.value)} / ${energy.cap}`;
 }
 
 // Unlocks things when conditions are met
@@ -65,10 +65,10 @@ function checkExists(property, isPercent = false) {
 }
 
 function resourceTips() {
-  document.getElementById('credTip').innerHTML = `${credits.rate} / s`;
-  document.getElementById('resTip').innerHTML = `${research.rate} / Sol`;
-  document.getElementById('energyTip').innerHTML = `<strong>Day:</strong> ${rise} / s<br><strong>Night:</strong> ${fall} / s`;
-  document.getElementById('popTip').innerHTML = `${population.rate} / Sol`;
+  document.getElementById('credTip').innerHTML = `${credits.rate.toFixed(2)} / s`;
+  document.getElementById('resTip').innerHTML = `${research.rate.toFixed(2)} / Sol`;
+  document.getElementById('energyTip').innerHTML = `<strong>Day:</strong> ${rise.toFixed(2)} / s<br><strong>Night:</strong> ${fall.toFixed(2)} / s`;
+  document.getElementById('popTip').innerHTML = `${population.rate.toFixed(2)} / Sol`;
 }
 
 // Updates Tooltip Values
@@ -117,7 +117,7 @@ function buy(item) {
 
     showCredits.innerHTML = Math.floor(credits.value);
     showPopulation.innerHTML = `${population.value} / ${population.cap}`;
-    showEnergy.innerHTML = `${energy.value} / ${energy.cap}`;
+    showEnergy.innerHTML = `${Math.floor(energy.value)} / ${energy.cap}`;
 
     buyTooltips(item);
     alertTxt('buy', item.cost);
@@ -134,7 +134,7 @@ function upgrade(item) {
 
     showCredits.innerHTML = Math.floor(credits.value);
     showPopulation.innerHTML = `${population.value} / ${population.cap}`;
-    showEnergy.innerHTML = `${energy.value} / ${energy.cap}`;
+    showEnergy.innerHTML = `${Math.floor(energy.value)} / ${energy.cap}`;
 
     upgradeTooltips(item);
     alertTxt('buy', item.cost);
@@ -201,5 +201,5 @@ buyTooltips(padVals);
 upgradeTooltips(upgradeBattery);
 showCredits.innerHTML = Math.floor(credits.value);
 showResearch.innerHTML = research.value;
-showEnergy.innerHTML = `${energy.value} / ${energy.cap}`;
+showEnergy.innerHTML = `${Math.floor(energy.value)} / ${energy.cap}`;
 showPopulation.innerHTML = `${population.value} / ${population.cap}`;
