@@ -64,6 +64,13 @@ function checkExists(property, isPercent = false) {
   else return false;
 }
 
+function resourceTips() {
+  document.getElementById('credTip').innerHTML = `${credits.rate} / s`;
+  document.getElementById('resTip').innerHTML = `${research.rate} / Sol`;
+  document.getElementById('energyTip').innerHTML = `<strong>Day:</strong> ${rise} / s<br><strong>Night:</strong> ${fall} / s`;
+  document.getElementById('popTip').innerHTML = `${population.rate} / Sol`;
+}
+
 // Updates Tooltip Values
 function buyTooltips(item) {
   let tip = document.getElementById(item.id);
@@ -78,6 +85,7 @@ function buyTooltips(item) {
     tip.innerHTML += `<br>${item.caps.energy} Total Energy`;
   if (checkExists(item.caps.population))
     tip.innerHTML += `<br>${item.caps.population} Total Pop`;
+  resourceTips();
 }
 
 function upgradeTooltips(item) {
@@ -91,6 +99,7 @@ function upgradeTooltips(item) {
     tip.innerHTML += `<br>${(1 - item.effects.research) * 100}% Research Rate`;
   if (checkExists(item.effects.population, true))
     tip.innerHTML += `<br>${(1 - item.effects.population) * 100}% Population Rate`;
+  resourceTips();
 }
 
 // Adjusts resources when purchase is made
@@ -118,7 +127,7 @@ function buy(item) {
 function upgrade(item) {
   if (credits.value >= item.cost) {
     fall *= item.effects.fall;
-    rise *= item.effetx.rise;
+    rise *= item.effects.rise;
     research.rate *= item.effects.research;
     population.rate *= item.effects.population;
 
@@ -165,6 +174,7 @@ setInterval(() => {
   unlock();
   events();
   story();
+  resourceTips();
 }, 24393.5);
 
 let day = false;
@@ -181,6 +191,7 @@ setInterval(() => {
 }, 12196.75);
 
 /**************** Initial Function Calls ****************/
+resourceTips();
 buyTooltips(solarVals);
 buyTooltips(batteryVals);
 buyTooltips(farmVals);

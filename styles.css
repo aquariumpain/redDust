@@ -91,9 +91,15 @@ button:hover {
 }
 
 .res {
-  flex: 1;
   text-align: center;
   line-height: 0.65em;
+}
+
+.res .tooltipText {
+  background-color: var(--color2);
+  color: var(--marsRed);
+  margin-top: 10px;
+  line-height: 1.3em;
 }
 
 #mars {
