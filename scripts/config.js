@@ -1,3 +1,10 @@
+// Initialize Resources
+const energy = new Resource(15, 1, 50);
+const credits = new Resource(0, 0.5, 0);
+const population = new Resource(5, 1, 10);
+const research = new Resource(0, 0, 0);
+
+// Buy Values
 solarVals = {
   id: 'solar',
   cost: 70,
@@ -51,5 +58,19 @@ labVals = {
   caps: {
     energy: 0,
     population: 0
+  }
+}
+
+// Upgrade Values
+upgradeBattery = {
+  id: 'batUp',
+  cost: 500,
+  unlock: 25,
+  message: 'test',
+  effects: { // Percent Of
+    fall: 0.75,
+    rise: 1,
+    research: 1,
+    population: 1
   }
 }

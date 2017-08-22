@@ -1,4 +1,3 @@
-const content = document.getElementById('consoleText');
 const mars = document.getElementById('mars');
 
 // Resource Elements
@@ -12,11 +11,9 @@ let sol = 1;
 let rise = 1;
 let fall = -1;
 
-// Initialize Resources
-let energy = new Resource(15, 1, 50);
-let credits = new Resource(0, 0.5, 0);
-let population = new Resource(5, 1, 10);
-let research = new Resource(0, 0, 0);
+function eventWrite(msg) {
+  document.getElementById('consoleText').innerHTML = `<p>$ Sol ${sol}: ${msg}</p>`;
+}
 
 let wasChanged = false;
 // Adds Resources
@@ -47,6 +44,14 @@ function addResources() {
 
   showCredits.innerHTML = Math.floor(credits.value);
   showEnergy.innerHTML = `${energy.value} / ${energy.cap}`;
+}
+
+// Unlocks things when conditions are met
+function unlock() {
+  if (research.value >= upgradeBattery.unlock) {
+    eventWrite('Your engineers have successfully figured out how to greatly improve the efficiency of our batteries! The energy loss rate over time for each battery has been reduced. We should be able to slow down our energy loss at night!');
+    document.getElementById('upgradeBattery').parentNode.style.visibility = 'visible';
+  }
 }
 
 // Updates Tooltip Values
@@ -82,11 +87,28 @@ function buy(item) {
   } else alertTxt('not afford');
 }
 
+function upgrade(item) {
+  if (credits.value >= item.cost) {
+    fall *= item.effects.fall;
+    rise *= item.effetx.rise;
+    research.rate *= item.effects.research;
+    population.rate *= item.effects.population;
+
+    showCredits.innerHTML = Math.floor(credits.value);
+    showPopulation.innerHTML = `${population.value} / ${population.cap}`;
+    showEnergy.innerHTML = `${energy.value} / ${energy.cap}`;
+
+    updateTooltips(item);
+    alertTxt('buy', item.cost);
+  } else alertTxt('not afford');
+}
+
 // Button Event Listeners
 document.getElementById('buySolar').addEventListener('click', () => buy(solarVals));
 document.getElementById('buyBattery').addEventListener('click', () => buy(battryVals));
 document.getElementById('buyFarm').addEventListener('click', () => buy(farmVals));
 document.getElementById('buyLab').addEventListener('click', () => buy(labVals));;
+document.getElementById('upgradeBattery').addEventListener('click', () => upgrade(upgradeBattery));
 
 /**************** Intervals ****************/
 
@@ -111,6 +133,7 @@ setInterval(() => {
 
   showPopulation.innerHTML = `${population.value} / ${population.cap}`;
   showResearch.innerHTML = research.value;
+  unlock();
   events();
   story();
 }, 24393.5);

@@ -1,13 +1,13 @@
 // Event window alert messages
 function alertTxt(input, num = 0) {
   if (input == 'low energy') {
-    content.innerHTML += `<p>$ Sol ${sol} - ALERT: Low power! Non-essential systems shut down. Emergency power routed to life support systems.</p>`;
+    eventWrite(`- ALERT - Low power! Non-essential systems shut down. Emergency power routed to life support systems`);
   }
   if (input == 'not afford') {
-    content.innerHTML += `<p>$ Sol ${sol} - STORE: Not enough Credits!</p>`;
+    eventWrite(`- STORE - Not enough Credits!`);
   }
   if (input == 'buy') {
-    content.innerHTML += `<p>$ Sol ${sol} - STORE: Thank you for your purchase! ${num} Credits deducted from balance!</p>`;
+    eventWrite(`- STORE - Thank you for your purchase! ${num} Credits deducted from balance!`);
   }
   content.scrollTop = content.scrollHeight;
 }
@@ -15,7 +15,7 @@ function alertTxt(input, num = 0) {
 // Scripted Story
 function story() {
   if (sol == 2) {
-    content.innerHTML += `<p>$ Sol 2: You watch the sun rise on a hazy red horizon. You've made it through the first day. A shuttle arrives with new people.</p>`;
+    eventWrite(`You watch the sun rise on a hazy red horizon. You've made it through the first day. A shuttle arrives with new people.`);
     content.scrollTop = content.scrollHeight;
   }
 }
@@ -29,7 +29,7 @@ function getRand(min, max) {
 function events() {
   chance = getRand(1, 30);
   if (chance == 1) {
-    content.innerHTML += `<p>$ Sol ${sol}: A dust storm rolls in. Everyone retreats back into the base. The storm coats the solar panels in dust. It will take most of the sol to clear them.</p>`;
+    eventWrite(`A dust storm rolls in. Everyone retreats back into the base. The storm coats the solar panels in dust. It will take most of the sol to clear them.`);
     energy.tmpChange(energy.rate - Math.abs(energy.rate), 10000);
   }
   content.scrollTop = content.scrollHeight;
