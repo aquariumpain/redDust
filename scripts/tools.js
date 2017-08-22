@@ -130,7 +130,7 @@ function upgrade(item) {
 
 // Button Event Listeners
 document.getElementById('buySolar').addEventListener('click', () => buy(solarVals));
-document.getElementById('buyBattery').addEventListener('click', () => buy(battryVals));
+document.getElementById('buyBattery').addEventListener('click', () => buy(batteryVals));
 document.getElementById('buyFarm').addEventListener('click', () => buy(farmVals));
 document.getElementById('buyLab').addEventListener('click', () => buy(labVals));;
 document.getElementById('buyPad').addEventListener('click', () => buy(padVals));;
