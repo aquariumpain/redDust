@@ -164,7 +164,7 @@ setInterval(() => {
   sol++;
   document.getElementById('sol').innerHTML = `Sol ${sol}`;
 
-  if (population.value < population.cap) population.value += population.rate;
+  if (population.value + population.rate < population.cap) population.value += population.rate;
   else population.value = population.cap;
 
   credits.rate = population.value / 10;
