@@ -5,6 +5,12 @@ const showCredits = document.getElementById('credits');
 const showPopulation = document.getElementById('population');
 const showEnergy = document.getElementById('energy');
 const showResearch = document.getElementById('research');
+const showSolarNum = document.getElementById('solarNum');
+const showBatteryNum = document.getElementById('batteryNum');
+const showFarmNum = document.getElementById('farmNum');
+const showLabNum = document.getElementById('labNum');
+const showPadNum = document.getElementById('padNum');
+const showUpgradeBatteryNum = document.getElementById('upgradeBatteryNum');
 
 // Other Variables
 let sol = 1;
@@ -215,7 +221,10 @@ function upgrade(item) {
     rise *= item.effects.rise;
     research.rate *= item.effects.research;
     population.rate *= item.effects.population;
-
+    if (item.id == 'solar') {
+      
+    }
+    
     showCredits.innerHTML = Math.floor(credits.value);
     showPopulation.innerHTML = `${population.value} / ${population.cap}`;
     showEnergy.innerHTML = `${Math.floor(energy.value)} / ${energy.cap}`;
