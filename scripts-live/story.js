@@ -47,7 +47,7 @@ function getRand(min, max) {
 
 // Generates random events
 function events() {
-  chance = getRand(1, 30);
+  var chance = getRand(1, 30);
   if (chance == 1) {
     eventWrite('A dust storm rolls in. Everyone retreats back into the base. The storm coats the solar panels in dust. It will take most of the sol to clear them.');
     energy.tmpChange(0, 10000);
