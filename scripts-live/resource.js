@@ -6,12 +6,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 // Resource Class
 var Resource = function () {
-  function Resource(initVal, initRate, initCap) {
+  function Resource(data) {
     _classCallCheck(this, Resource);
 
-    this.value = initVal;
-    this.rate = initRate;
-    this.cap = initCap;
+    this.value = data.value;
+    this.rate = data.rate;
+    this.cap = data.cap;
   }
 
   // Temporarily changes a rate for a given amount of time

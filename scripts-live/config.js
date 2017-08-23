@@ -1,11 +1,5 @@
 'use strict';
 
-// Initialize Resources
-var energy = new Resource(15, 1, 50);
-var credits = new Resource(0, 0.5, 0);
-var population = new Resource(5, 1, 10);
-var research = new Resource(0, 0, 0);
-
 // Buy Values
 var solarVals = {
   id: 'solar',
