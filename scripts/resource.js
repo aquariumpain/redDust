@@ -1,9 +1,9 @@
 // Resource Class
 class Resource {
-  constructor(initVal, initRate, initCap) {
-    this.value = initVal;
-    this.rate = initRate;
-    this.cap = initCap;
+  constructor(data) {
+    this.value = data.value;
+    this.rate = data.rate;
+    this.cap = data.cap;
   }
 
   // Temporarily changes a rate for a given amount of time

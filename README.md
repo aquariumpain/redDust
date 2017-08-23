@@ -23,3 +23,6 @@ You can buy things with credits. Items unlock as you gain research points.
 ## Game Mechanics
 ### Energy
 For half a sol energy rate rises, for the other half it decreases. Buying things alters the rate at which it rises or falls.
+
+### Save
+The game saves data locally at the end of every sol.

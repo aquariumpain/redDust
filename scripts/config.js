@@ -1,9 +1,3 @@
-// Initialize Resources
-const energy = new Resource(15, 1, 50);
-const credits = new Resource(0, 0.5, 0);
-const population = new Resource(5, 1, 10);
-const research = new Resource(0, 0, 0);
-
 // Buy Values
 const solarVals = {
   id: 'solar',

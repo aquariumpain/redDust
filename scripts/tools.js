@@ -12,6 +12,90 @@ let rise = 1;
 let fall = -1;
 let next = 0; // Used in unlocks function
 
+// Initialize Resources
+let energy = new Resource({
+  value: 15,
+  rate: 1,
+  cap: 50
+});
+let credits = new Resource({
+  value: 0,
+  rate: 0.5,
+  cap: 0
+});
+let population = new Resource({
+  value: 5,
+  rate: 1,
+  cap: 10
+});
+let research = new Resource({
+  value: 0,
+  rate: 0,
+  cap: 0
+});
+
+// Save Data
+function populateStorage() {
+  localStorage.setItem('sol', sol);
+  localStorage.setItem('rise', rise);
+  localStorage.setItem('fall', fall);
+  localStorage.setItem('energy', JSON.stringify(energy));
+  localStorage.setItem('credits', JSON.stringify(credits));
+  localStorage.setItem('population', JSON.stringify(population));
+  localStorage.setItem('research', JSON.stringify(research));
+
+  setValues();
+}
+
+function setValues() {
+  sol = Number(localStorage.getItem('sol'));
+  rise = Number(localStorage.getItem('rise'));
+  fall = Number(localStorage.getItem('fall'));
+  energy = new Resource(JSON.parse(localStorage.getItem('energy')));
+  credits = new Resource(JSON.parse(localStorage.getItem('credits')));
+  population = new Resource(JSON.parse(localStorage.getItem('population')));
+  research = new Resource(JSON.parse(localStorage.getItem('research')));
+}
+
+function storageAvailable(type) {
+  try {
+      var storage = window[type],
+          x = '__storage_test__';
+      storage.setItem(x, x);
+      storage.removeItem(x);
+      return true;
+  }
+  catch(e) {
+      return e instanceof DOMException && (
+          // everything except Firefox
+          e.code === 22 ||
+          // Firefox
+          e.code === 1014 ||
+          // test name field too, because code might not be present
+          // everything except Firefox
+          e.name === 'QuotaExceededError' ||
+          // Firefox
+          e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+          // acknowledge QuotaExceededError only if there's something already stored
+          storage.length !== 0;
+  }
+}
+
+if (storageAvailable('localStorage')) {
+  // Yippee! We can use localStorage awesomeness
+  console.log('Can Save!');
+  if(localStorage.length == 0) {
+    populateStorage();
+  } else {
+    setValues();
+  }
+}
+else {
+  // Too bad, no localStorage for us
+  console.log(`Can't Save!`);
+}
+
+// Writes to the event window
 function eventWrite(msg) {
   document.getElementById('consoleText').innerHTML += `<p>$ Sol ${sol}: ${msg}</p>`;
 }
@@ -176,6 +260,7 @@ setInterval(() => {
   events();
   story();
   resourceTips();
+  populateStorage();
 }, 24393.5);
 
 let day = false;
@@ -192,6 +277,7 @@ setInterval(() => {
 }, 12196.75);
 
 /**************** Initial Function Calls ****************/
+unlock();
 resourceTips();
 buyTooltips(solarVals);
 buyTooltips(batteryVals);
