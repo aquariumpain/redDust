@@ -72,10 +72,11 @@ button:hover {
   z-index: 0;
   color: var(--color1);
   background-color: transparent;
+  position: initial;
+  height: 25px;
 }
 
 .buyNum {
-  height: 25px;
   visibility: visible;
   opacity: 1;
 }
