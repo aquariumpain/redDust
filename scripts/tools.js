@@ -51,6 +51,7 @@ function populateStorage() {
   localStorage.setItem('sol', sol);
   localStorage.setItem('rise', rise);
   localStorage.setItem('fall', fall);
+  localStorage.setItem('next', next);
   localStorage.setItem('energy', JSON.stringify(energy));
   localStorage.setItem('credits', JSON.stringify(credits));
   localStorage.setItem('population', JSON.stringify(population));
@@ -64,11 +65,52 @@ function setValues() {
   sol = Number(localStorage.getItem('sol'));
   rise = Number(localStorage.getItem('rise'));
   fall = Number(localStorage.getItem('fall'));
+  next = Number(localStorage.getItem('next'));
   energy = new Resource(JSON.parse(localStorage.getItem('energy')));
   credits = new Resource(JSON.parse(localStorage.getItem('credits')));
   population = new Resource(JSON.parse(localStorage.getItem('population')));
   research = new Resource(JSON.parse(localStorage.getItem('research')));
   items = new BoughtItems(JSON.parse(localStorage.getItem('items')));
+}
+
+function resetValues() {
+  localStorage.setItem('sol', 1);
+  localStorage.setItem('rise', 1);
+  localStorage.setItem('fall', -1);
+  localStorage.setItem('fall', 0);
+  localStorage.setItem('energy', JSON.stringify(new Resource({
+    value: 15,
+    rate: 1,
+    cap: 50
+  })));
+  localStorage.setItem('credits', JSON.stringify(new Resource({
+    value: 0,
+    rate: 0.5,
+    cap: 0
+  })));
+  localStorage.setItem('population', JSON.stringify(new Resource({
+    value: 5,
+    rate: 1,
+    cap: 10
+  })));
+  localStorage.setItem('research', JSON.stringify(new Resource({
+    value: 0,
+    rate: 0,
+    cap: 0
+  })));
+  localStorage.setItem('items', JSON.stringify(new BoughtItems({
+    items: {
+      solar: 0,
+      battery: 0,
+      farm: 0,
+      lab: 0,
+      pad: 0
+    },
+    upgrades: {
+      batUp: 0
+    }
+  })));
+  setValues();
 }
 
 function storageAvailable(type) {
@@ -151,6 +193,7 @@ function unlock() {
   if (research.value >= upgradeBattery.unlock && next == 0) {
     eventWrite('Your engineers have successfully figured out how to greatly improve the efficiency of our batteries! The energy loss rate over time for each battery has been reduced. We should be able to slow down our energy loss at night! We just need to fund their production now.');
     document.getElementById('upgradeBattery').parentNode.style.visibility = 'visible';
+    document.getElementById('batUpNum').className += ' buyNum';
     next++;
   }
 }
