@@ -83,6 +83,10 @@ button:hover {
   background-color: transparent;
 }
 
+.tooltipNum:hover {
+  opacity: 1;
+}
+
 .buyNum {
   visibility: visible;
   opacity: 1;
