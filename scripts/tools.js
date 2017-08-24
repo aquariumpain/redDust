@@ -39,6 +39,19 @@ let research = new Resource({
   rate: 0,
   cap: 0
 });
+let items = new BoughtItems({
+  items: {
+    solar: 0,
+    battery: 0,
+    farm: 0,
+    lab: 0,
+    pad: 0,
+    batteryUpgrade: 0
+  },
+  upgrades: {
+    battery: 0
+  }
+});
 
 // Save Data
 function populateStorage() {
@@ -49,6 +62,7 @@ function populateStorage() {
   localStorage.setItem('credits', JSON.stringify(credits));
   localStorage.setItem('population', JSON.stringify(population));
   localStorage.setItem('research', JSON.stringify(research));
+  localStorage.setItem('items', JSON.stringify(items));
 
   setValues();
 }
@@ -61,6 +75,7 @@ function setValues() {
   credits = new Resource(JSON.parse(localStorage.getItem('credits')));
   population = new Resource(JSON.parse(localStorage.getItem('population')));
   research = new Resource(JSON.parse(localStorage.getItem('research')));
+  items = new BoughtItems(JSON.parse(localStorage.getItem('items')));
 }
 
 function storageAvailable(type) {
@@ -222,9 +237,9 @@ function upgrade(item) {
     research.rate *= item.effects.research;
     population.rate *= item.effects.population;
     if (item.id == 'solar') {
-      
+
     }
-    
+
     showCredits.innerHTML = Math.floor(credits.value);
     showPopulation.innerHTML = `${population.value} / ${population.cap}`;
     showEnergy.innerHTML = `${Math.floor(energy.value)} / ${energy.cap}`;
