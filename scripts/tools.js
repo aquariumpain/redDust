@@ -111,6 +111,19 @@ function resetValues() {
     }
   })));
   setValues();
+  unlock();
+  resourceTips();
+  buyTooltips(solarVals);
+  buyTooltips(batteryVals);
+  buyTooltips(farmVals);
+  buyTooltips(labVals);
+  buyTooltips(padVals);
+  upgradeTooltips(upgradeBattery);
+  showCredits.innerHTML = Math.floor(credits.value);
+  showResearch.innerHTML = research.value;
+  showEnergy.innerHTML = `${Math.floor(energy.value)} / ${energy.cap}`;
+  showPopulation.innerHTML = `${population.value} / ${population.cap}`;
+  document.getElementById('consoleText').innerHTML = '<p>$ Sol 1: The landing module jolts as the retro-rockets activate. You had forgtten just how much everything shook during the final descent. With a second jolt, everything became quiet and still again. You look out the small round window to your right, only to see nothing but a cloud of red dust kicked up from the landing. Light pours into the landing module as the bulkheads whir open. You're now 55 million kilometers from your old home. Now the real work begins. It's the year 2217, Systems United has chosen you to start Mars colony 42.</p>'
 }
 
 function storageAvailable(type) {
