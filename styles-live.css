@@ -94,7 +94,7 @@ button:hover {
 }
 
 
-.tooltipNum:hover {
+.tooltip:hover > .tooltipNum {
   opacity: 1;
 }
 
