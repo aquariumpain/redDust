@@ -55,6 +55,8 @@ button:hover {
 }
 
 .tooltipText {
+  position: relative;
+  top: -39px;
   visibility: hidden;
   opacity: 0;
   width: calc(100% - 10px);
@@ -73,6 +75,7 @@ button:hover {
 }
 
 .buyNum {
+  height: 25px;
   visibility: visible;
   opacity: 1;
 }
@@ -80,6 +83,11 @@ button:hover {
 .tooltip:hover > .tooltipText{
   visibility: visible;
   opacity: 0.7;
+}
+
+
+.tooltip:hover > .tooltipNum {
+  opacity: 1;
 }
 
 .locked {
