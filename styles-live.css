@@ -65,6 +65,8 @@ button:hover {
 }
 
 .tooltipText {
+  position: relative;
+  top: -39px;
   visibility: hidden;
   opacity: 0;
   width: calc(100% - 10px);
@@ -84,6 +86,7 @@ button:hover {
 }
 
 .buyNum {
+  height: 25px;
   visibility: visible;
   opacity: 1;
 }
