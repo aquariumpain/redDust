@@ -35,6 +35,18 @@ var research = new Resource({
   rate: 0,
   cap: 0
 });
+var items = new BoughtItems({
+  items: {
+    solar: 0,
+    battery: 0,
+    farm: 0,
+    lab: 0,
+    pad: 0
+  },
+  upgrades: {
+    batUp: 0
+  }
+});
 
 // Save Data
 function populateStorage() {
@@ -45,6 +57,7 @@ function populateStorage() {
   localStorage.setItem('credits', JSON.stringify(credits));
   localStorage.setItem('population', JSON.stringify(population));
   localStorage.setItem('research', JSON.stringify(research));
+  localStorage.setItem('items', JSON.stringify(items));
 
   setValues();
 }
@@ -57,6 +70,7 @@ function setValues() {
   credits = new Resource(JSON.parse(localStorage.getItem('credits')));
   population = new Resource(JSON.parse(localStorage.getItem('population')));
   research = new Resource(JSON.parse(localStorage.getItem('research')));
+  items = new BoughtItems(JSON.parse(localStorage.getItem('items')));
 }
 
 function storageAvailable(type) {
@@ -158,6 +172,9 @@ function resourceTips() {
 // Updates Tooltip Values
 function buyTooltips(item) {
   var tip = document.getElementById(item.id);
+  var numTip = document.getElementById(item.id + 'Num');
+  var numVal = items.items[item.id];
+  numTip.innerHTML = 'You have ' + numVal;
   tip.innerHTML = '-' + item.cost + ' Credits';
   if (checkExists(item.rates.energy)) tip.innerHTML += '<br>' + item.rates.energy + ' Energy/s';
   if (checkExists(item.rates.research)) tip.innerHTML += '<br>' + item.rates.research + ' Research/s';
@@ -169,6 +186,9 @@ function buyTooltips(item) {
 
 function upgradeTooltips(item) {
   var tip = document.getElementById(item.id);
+  var numTip = document.getElementById(item.id + 'Num');
+  var numVal = items.upgrades[item.id];
+  numTip.innerHTML = 'You have ' + numVal;
   tip.innerHTML = '-' + item.cost + ' Credits';
   if (checkExists(item.effects.fall, true)) tip.innerHTML += '<br>-' + (1 - item.effects.fall) * 100 + '% Energy Fall Rate';
   if (checkExists(item.effects.rise, true)) tip.innerHTML += '<br>' + (1 - item.effects.rise) * 100 + '% Energy Rise Rate';
@@ -185,6 +205,8 @@ function buy(item) {
     if (item.rates.energy > 0) rise += item.rates.energy;else fall += item.rates.energy;
     research.rate += item.rates.research;
     population.rate += item.rates.population;
+
+    items.items[item.id]++;
 
     energy.cap += item.caps.energy;
     population.cap += item.caps.population;
@@ -205,6 +227,8 @@ function upgrade(item) {
     rise *= item.effects.rise;
     research.rate *= item.effects.research;
     population.rate *= item.effects.population;
+
+    items.upgrades[item.id]++;
 
     showCredits.innerHTML = Math.floor(credits.value);
     showPopulation.innerHTML = population.value + ' / ' + population.cap;

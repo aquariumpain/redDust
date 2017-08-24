@@ -67,10 +67,14 @@ button:hover {
 }
 
 .tooltipNum {
-  z-index: -1;
+  visibility: visible;
+  z-index: 0;
   color: var(--color1);
   background-color: transparent;
-  position: absolute;
+}
+
+.buyNum {
+  opacity: 1;
 }
 
 .tooltip:hover > .tooltipText{

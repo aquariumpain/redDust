@@ -5,12 +5,6 @@ const showCredits = document.getElementById('credits');
 const showPopulation = document.getElementById('population');
 const showEnergy = document.getElementById('energy');
 const showResearch = document.getElementById('research');
-const showSolarNum = document.getElementById('solarNum');
-const showBatteryNum = document.getElementById('batteryNum');
-const showFarmNum = document.getElementById('farmNum');
-const showLabNum = document.getElementById('labNum');
-const showPadNum = document.getElementById('padNum');
-const showUpgradeBatteryNum = document.getElementById('upgradeBatteryNum');
 
 // Other Variables
 let sol = 1;
@@ -45,11 +39,10 @@ let items = new BoughtItems({
     battery: 0,
     farm: 0,
     lab: 0,
-    pad: 0,
-    batteryUpgrade: 0
+    pad: 0
   },
   upgrades: {
-    battery: 0
+    batUp: 0
   }
 });
 
@@ -81,7 +74,7 @@ function setValues() {
 function storageAvailable(type) {
   try {
       var storage = window[type],
-          x = '__storage_test__';
+      x = '__storage_test__';
       storage.setItem(x, x);
       storage.removeItem(x);
       return true;
@@ -179,6 +172,9 @@ function resourceTips() {
 // Updates Tooltip Values
 function buyTooltips(item) {
   let tip = document.getElementById(item.id);
+  let numTip = document.getElementById(item.id + 'Num');
+  let numVal = items.items[item.id];
+  numTip.innerHTML = `You have ${numVal}`;
   tip.innerHTML = `-${item.cost} Credits`;
   if (checkExists(item.rates.energy))
     tip.innerHTML += `<br>${item.rates.energy} Energy/s`;
@@ -195,6 +191,9 @@ function buyTooltips(item) {
 
 function upgradeTooltips(item) {
   let tip = document.getElementById(item.id);
+  let numTip = document.getElementById(item.id + 'Num');
+  let numVal = items.upgrades[item.id];
+  numTip.innerHTML = `You have ${numVal}`;
   tip.innerHTML = `-${item.cost} Credits`;
   if (checkExists(item.effects.fall, true))
     tip.innerHTML += `<br>-${(1 - item.effects.fall) * 100}% Energy Fall Rate`;
@@ -217,6 +216,8 @@ function buy(item) {
     research.rate += item.rates.research;
     population.rate += item.rates.population;
 
+    items.items[item.id]++;
+
     energy.cap += item.caps.energy;
     population.cap += item.caps.population;
 
@@ -236,9 +237,8 @@ function upgrade(item) {
     rise *= item.effects.rise;
     research.rate *= item.effects.research;
     population.rate *= item.effects.population;
-    if (item.id == 'solar') {
 
-    }
+    items.upgrades[item.id]++;
 
     showCredits.innerHTML = Math.floor(credits.value);
     showPopulation.innerHTML = `${population.value} / ${population.cap}`;
