@@ -101,6 +101,9 @@ function eventWrite(msg) {
 }
 
 let wasChanged = false;
+let holdPop = population.rate;
+let holdRes = research.rate;
+let holdCreds = credits.rate;
 // Adds Resources
 function addResources() {
   let lowEnergy = energy.cap / 10;
@@ -114,9 +117,12 @@ function addResources() {
   if (energy.value < lowEnergy) {
     // Prints alert once and won't print again until energy re-drops below lowEnergy
     if (!wasChanged) {
-      research.tmpChange(0, 1000)
-      population.tmpChange(0, 1000);
-      credits.tmpChange(credits.rate / 2, 1000);
+      holdPop = population.rate;
+      holdRes = research.rate;
+      holdCreds = credits.rate;
+      research.rate = 0;
+      population.rate = 0;
+      credits.rate = holdCreds / 2;
       alertTxt('low energy');
       wasChanged = true;
     }
@@ -124,6 +130,11 @@ function addResources() {
   }
   // If energy rises back above lowEnergy
   if (energy.value > lowEnergy) {
+    if (wasChanged) {
+      research.rate = holdRes;
+      population.rate = holdPop;
+      credits.rate = holdCreds;
+    }
     wasChanged = false;
     document.documentElement.style.setProperty('--color2', '#D7D7D7');
   }
@@ -239,6 +250,7 @@ document.getElementById('upgradeBattery').addEventListener('click', () => upgrad
 // Resource gain
 setInterval(() => {
   addResources();
+  resourceTips();
 }, 1000)
 
 // Sol Interval
