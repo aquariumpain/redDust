@@ -13,6 +13,22 @@ body {
   display: flex;
 }
 
+#flash {
+  position: absolute;
+  opacity: 0;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(186, 218, 85, 0.85);
+  width: 80%;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.3em;
+  border: 2px solid #809833;
+  transition: all 0.4s cubic-bezier(0, 1.34, 0.82, 1.23);
+}
+
 /* ---------- Control Styles ---------- */
 .control {
   flex: 1;
@@ -152,7 +168,13 @@ button:hover {
   z-index: 2;
 }
 
+.saveButtons {
+  display: flex;
+}
+
+#save { flex: 3; }
+#reset { flex: 1; }
+
 @media only screen and (max-width: 700px) {
   .nonMobile { visibility: visible; }
-
 }

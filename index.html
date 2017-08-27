@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Red Dust</title>
 
-  <link rel="stylesheet" type="text/css" href="styles-live.css">
+  <link rel="stylesheet" type="text/css" href="styles.css">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro|Titillium+Web" rel="stylesheet">
 
   <script>
@@ -23,6 +23,8 @@
 <body>
 
   <span class="nonMobile">Red Dust does not work on mobile!<br>Sorry :(</span>
+
+  <span id="flash">test</span>
 
   <div class="wrapper">
 
@@ -110,7 +112,7 @@
       <!-- Events -->
       <div class="events">
         <div class="titleBar">
-          <h3 id="sol">Sol 1</h3>
+          <h3 id="sol"></h3>
           <p>v0.6</p>
         </div>
         <div id="consoleText">
@@ -119,6 +121,11 @@
           </p>
           <span id="last"></span>
         </div>
+
+        <div class="saveButtons">
+          <button id="reset">Reset</button>
+          <button id="save">Save Now</button>
+        </div>
       </div>
     </div>
 
@@ -126,7 +133,7 @@
 
   <script type="text/javascript" src="scripts-live/resource.js"></script>
   <script type="text/javascript" src="scripts-live/config.js"></script>
-  <script type="text/javascript" src="scripts-live/tools.js"></script>
+  <script type="text/javascript" src="scripts/tools.js"></script>
   <script type="text/javascript" src="scripts-live/story.js"></script>
   
 </body>
