@@ -41,18 +41,22 @@ function populateStorage() {
   localStorage.setItem('sol', sol);
   localStorage.setItem('rise', rise);
   localStorage.setItem('fall', fall);
+  localStorage.setItem('next', next);
   localStorage.setItem('energy', JSON.stringify(energy));
   localStorage.setItem('credits', JSON.stringify(credits));
   localStorage.setItem('population', JSON.stringify(population));
   localStorage.setItem('research', JSON.stringify(research));
 
   setValues();
+
+  console.log('Saved');
 }
 
 function setValues() {
   sol = Number(localStorage.getItem('sol'));
   rise = Number(localStorage.getItem('rise'));
   fall = Number(localStorage.getItem('fall'));
+  next = Number(localStorage.getItem('next'));
   energy = new Resource(JSON.parse(localStorage.getItem('energy')));
   credits = new Resource(JSON.parse(localStorage.getItem('credits')));
   population = new Resource(JSON.parse(localStorage.getItem('population')));
@@ -93,6 +97,17 @@ if (storageAvailable('localStorage')) {
 } else {
   // Too bad, no localStorage for us
   console.log('Can\'t Save!');
+}
+
+function flash(msg) {
+  var flashMsg = document.getElementById('flash');
+  flashMsg.innerHTML = msg;
+  flashMsg.style.top = '15px';
+  flashMsg.style.opacity = '1';
+  setTimeout(function () {
+    flashMsg.style.top = '-50px';
+    flashMsg.style.opacity = '0';
+  }, 3000);
 }
 
 // Writes to the event window
@@ -246,6 +261,18 @@ document.getElementById('upgradeBattery').addEventListener('click', function () 
   return upgrade(upgradeBattery);
 });
 
+document.getElementById('save').addEventListener('click', function () {
+  populateStorage();
+  flash('Save Successful!');
+});
+document.getElementById('reset').addEventListener('click', function () {
+  if (window.confirm('Are you sure you want to reset all values?')) {
+    localStorage.clear();
+    flash('Game Reset: Refresh page to start over!');
+    window.location.reload();
+  }
+});
+
 /**************** Intervals ****************/
 
 // Interval runs each second
@@ -301,3 +328,4 @@ showCredits.innerHTML = Math.floor(credits.value);
 showResearch.innerHTML = research.value;
 showEnergy.innerHTML = Math.floor(energy.value) + ' / ' + energy.cap;
 showPopulation.innerHTML = population.value + ' / ' + population.cap;
+document.getElementById('sol').innerHTML = 'Sol ' + sol;

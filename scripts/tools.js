@@ -328,3 +328,4 @@ showCredits.innerHTML = Math.floor(credits.value);
 showResearch.innerHTML = research.value;
 showEnergy.innerHTML = `${Math.floor(energy.value)} / ${energy.cap}`;
 showPopulation.innerHTML = `${population.value} / ${population.cap}`;
+document.getElementById('sol').innerHTML = `Sol ${sol}`;
