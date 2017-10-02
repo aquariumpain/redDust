@@ -35,6 +35,7 @@ var research = new Resource({
   rate: 0,
   cap: 0
 });
+// Initialize BoughtItems
 var items = new BoughtItems({
   items: {
     solar: 0,
@@ -53,6 +54,7 @@ function populateStorage() {
   localStorage.setItem('sol', sol);
   localStorage.setItem('rise', rise);
   localStorage.setItem('fall', fall);
+  localStorage.setItem('next', next);
   localStorage.setItem('energy', JSON.stringify(energy));
   localStorage.setItem('credits', JSON.stringify(credits));
   localStorage.setItem('population', JSON.stringify(population));
@@ -60,12 +62,15 @@ function populateStorage() {
   localStorage.setItem('items', JSON.stringify(items));
 
   setValues();
+
+  console.log('Saved');
 }
 
 function setValues() {
   sol = Number(localStorage.getItem('sol'));
   rise = Number(localStorage.getItem('rise'));
   fall = Number(localStorage.getItem('fall'));
+  next = Number(localStorage.getItem('next'));
   energy = new Resource(JSON.parse(localStorage.getItem('energy')));
   credits = new Resource(JSON.parse(localStorage.getItem('credits')));
   population = new Resource(JSON.parse(localStorage.getItem('population')));
@@ -109,12 +114,26 @@ if (storageAvailable('localStorage')) {
   console.log('Can\'t Save!');
 }
 
+function flash(msg) {
+  var flashMsg = document.getElementById('flash');
+  flashMsg.innerHTML = msg;
+  flashMsg.style.top = '15px';
+  flashMsg.style.opacity = '1';
+  setTimeout(function () {
+    flashMsg.style.top = '-50px';
+    flashMsg.style.opacity = '0';
+  }, 3000);
+}
+
 // Writes to the event window
 function eventWrite(msg) {
   document.getElementById('consoleText').innerHTML += '<p>$ Sol ' + sol + ': ' + msg + '</p>';
 }
 
 var wasChanged = false;
+var holdPop = population.rate;
+var holdRes = research.rate;
+var holdCreds = credits.rate;
 // Adds Resources
 function addResources() {
   var lowEnergy = energy.cap / 10;
@@ -128,9 +147,12 @@ function addResources() {
   if (energy.value < lowEnergy) {
     // Prints alert once and won't print again until energy re-drops below lowEnergy
     if (!wasChanged) {
-      research.tmpChange(0, 1000);
-      population.tmpChange(0, 1000);
-      credits.tmpChange(credits.rate / 2, 1000);
+      holdPop = population.rate;
+      holdRes = research.rate;
+      holdCreds = credits.rate;
+      research.rate = 0;
+      population.rate = 0;
+      credits.rate = holdCreds / 2;
       alertTxt('low energy');
       wasChanged = true;
     }
@@ -138,6 +160,11 @@ function addResources() {
   }
   // If energy rises back above lowEnergy
   if (energy.value > lowEnergy) {
+    if (wasChanged) {
+      research.rate = holdRes;
+      population.rate = holdPop;
+      credits.rate = holdCreds;
+    }
     wasChanged = false;
     document.documentElement.style.setProperty('--color2', '#D7D7D7');
   }
@@ -151,6 +178,7 @@ function unlock() {
   if (research.value >= upgradeBattery.unlock && next == 0) {
     eventWrite('Your engineers have successfully figured out how to greatly improve the efficiency of our batteries! The energy loss rate over time for each battery has been reduced. We should be able to slow down our energy loss at night! We just need to fund their production now.');
     document.getElementById('upgradeBattery').parentNode.style.visibility = 'visible';
+    document.getElementById('batUpNum').className += ' buyNum';
     next++;
   }
 }
@@ -206,6 +234,7 @@ function buy(item) {
     research.rate += item.rates.research;
     population.rate += item.rates.population;
 
+    // Increment Buy Counter
     items.items[item.id]++;
 
     energy.cap += item.caps.energy;
@@ -228,6 +257,7 @@ function upgrade(item) {
     research.rate *= item.effects.research;
     population.rate *= item.effects.population;
 
+    // Increment Upgrade Counter
     items.upgrades[item.id]++;
 
     showCredits.innerHTML = Math.floor(credits.value);
@@ -259,12 +289,25 @@ document.getElementById('upgradeBattery').addEventListener('click', function () 
   return upgrade(upgradeBattery);
 });
 
+document.getElementById('save').addEventListener('click', function () {
+  populateStorage();
+  flash('Save Successful!');
+});
+document.getElementById('reset').addEventListener('click', function () {
+  if (window.confirm('Are you sure you want to reset all values?')) {
+    localStorage.clear();
+    flash('Game Reset: Refresh page to start over!');
+    window.location.reload();
+  }
+});
+
 /**************** Intervals ****************/
 
 // Interval runs each second
 // Resource gain
 setInterval(function () {
   addResources();
+  resourceTips();
 }, 1000);
 
 // Sol Interval
@@ -313,3 +356,4 @@ showCredits.innerHTML = Math.floor(credits.value);
 showResearch.innerHTML = research.value;
 showEnergy.innerHTML = Math.floor(energy.value) + ' / ' + energy.cap;
 showPopulation.innerHTML = population.value + ' / ' + population.cap;
+document.getElementById('sol').innerHTML = 'Sol ' + sol;

@@ -9,12 +9,31 @@ body {
   display: flex;
 }
 
+#flash {
+  position: absolute;
+  opacity: 0;
+  top: -50px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  background-color: rgba(186, 218, 85, .85);
+  width: 80%;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.3em;
+  border: 2px solid #809833;
+  -webkit-transition: all 0.4s cubic-bezier(0, 1.34, 0.82, 1.23);
+  transition: all 0.4s cubic-bezier(0, 1.34, 0.82, 1.23);
+}
+
 /* ---------- Control Styles ---------- */
 .control {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
-  height: calc(100vh - 40px);
+  height: 100%;
+  min-height: 100vh;
   background-color: #D7D7D7;
   color: #424242;
   padding: 20px 50px;
@@ -83,10 +102,12 @@ button:hover {
   z-index: 0;
   color: #424242;
   background-color: transparent;
+  position: static;
+  position: initial;
+  height: 25px;
 }
 
 .buyNum {
-  height: 25px;
   visibility: visible;
   opacity: 1;
 }
@@ -95,7 +116,6 @@ button:hover {
   visibility: visible;
   opacity: 0.7;
 }
-
 
 .tooltip:hover > .tooltipNum {
   opacity: 1;
@@ -111,7 +131,8 @@ button:hover {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
-  height: calc(100vh - 40px);
+  height: 100%;
+  min-height: 100vh;
   background-color: #424242;
   color: #D7D7D7;
   padding: 20px 50px;
@@ -150,7 +171,7 @@ button:hover {
   background-color: #282828;
   font-family: 'Source Sans Pro';
   margin-top: 60px;
-  height: 70%;
+  height: 60vh;
 }
 
 .titleBar {
@@ -194,7 +215,15 @@ button:hover {
   z-index: 2;
 }
 
+.saveButtons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#save { -webkit-box-flex: 3; -ms-flex: 3; flex: 3; }
+#reset { -webkit-box-flex: 1; -ms-flex: 1; flex: 1; }
+
 @media only screen and (max-width: 700px) {
   .nonMobile { visibility: visible; }
-
 }

@@ -13,10 +13,27 @@ body {
   display: flex;
 }
 
+#flash {
+  position: absolute;
+  opacity: 0;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(186, 218, 85, 0.85);
+  width: 80%;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.3em;
+  border: 2px solid #809833;
+  transition: all 0.4s cubic-bezier(0, 1.34, 0.82, 1.23);
+}
+
 /* ---------- Control Styles ---------- */
 .control {
   flex: 1;
-  height: calc(100vh - 40px);
+  height: 100%;
+  min-height: 100vh;
   background-color: var(--color2);
   color: var(--color1);
   padding: 20px 50px;
@@ -86,7 +103,6 @@ button:hover {
   opacity: 0.7;
 }
 
-
 .tooltip:hover > .tooltipNum {
   opacity: 1;
 }
@@ -99,7 +115,8 @@ button:hover {
 /* ---------- Console Styles ---------- */
 .console {
   flex: 1;
-  height: calc(100vh - 40px);
+  height: 100%;
+  min-height: 100vh;
   background-color: var(--color1);
   color: var(--color2);
   padding: 20px 50px;
@@ -132,7 +149,7 @@ button:hover {
   background-color: #282828;
   font-family: 'Source Sans Pro';
   margin-top: 60px;
-  height: 70%;
+  height: 60vh;
 }
 
 .titleBar {
@@ -172,7 +189,13 @@ button:hover {
   z-index: 2;
 }
 
+.saveButtons {
+  display: flex;
+}
+
+#save { flex: 3; }
+#reset { flex: 1; }
+
 @media only screen and (max-width: 700px) {
   .nonMobile { visibility: visible; }
-
 }

@@ -33,6 +33,7 @@ let research = new Resource({
   rate: 0,
   cap: 0
 });
+// Initialize BoughtItems
 let items = new BoughtItems({
   items: {
     solar: 0,
@@ -59,6 +60,8 @@ function populateStorage() {
   localStorage.setItem('items', JSON.stringify(items));
 
   setValues();
+
+  console.log('Saved');
 }
 
 function setValues() {
@@ -73,63 +76,10 @@ function setValues() {
   items = new BoughtItems(JSON.parse(localStorage.getItem('items')));
 }
 
-function resetValues() {
-  localStorage.setItem('sol', 1);
-  localStorage.setItem('rise', 1);
-  localStorage.setItem('fall', -1);
-  localStorage.setItem('fall', 0);
-  localStorage.setItem('energy', JSON.stringify(new Resource({
-    value: 15,
-    rate: 1,
-    cap: 50
-  })));
-  localStorage.setItem('credits', JSON.stringify(new Resource({
-    value: 0,
-    rate: 0.5,
-    cap: 0
-  })));
-  localStorage.setItem('population', JSON.stringify(new Resource({
-    value: 5,
-    rate: 1,
-    cap: 10
-  })));
-  localStorage.setItem('research', JSON.stringify(new Resource({
-    value: 0,
-    rate: 0,
-    cap: 0
-  })));
-  localStorage.setItem('items', JSON.stringify(new BoughtItems({
-    items: {
-      solar: 0,
-      battery: 0,
-      farm: 0,
-      lab: 0,
-      pad: 0
-    },
-    upgrades: {
-      batUp: 0
-    }
-  })));
-  setValues();
-  unlock();
-  resourceTips();
-  buyTooltips(solarVals);
-  buyTooltips(batteryVals);
-  buyTooltips(farmVals);
-  buyTooltips(labVals);
-  buyTooltips(padVals);
-  upgradeTooltips(upgradeBattery);
-  showCredits.innerHTML = Math.floor(credits.value);
-  showResearch.innerHTML = research.value;
-  showEnergy.innerHTML = `${Math.floor(energy.value)} / ${energy.cap}`;
-  showPopulation.innerHTML = `${population.value} / ${population.cap}`;
-  document.getElementById('consoleText').innerHTML = '<p>$ Sol 1: The landing module jolts as the retro-rockets activate. You had forgtten just how much everything shook during the final descent. With a second jolt, everything became quiet and still again. You look out the small round window to your right, only to see nothing but a cloud of red dust kicked up from the landing. Light pours into the landing module as the bulkheads whir open. You're now 55 million kilometers from your old home. Now the real work begins. It's the year 2217, Systems United has chosen you to start Mars colony 42.</p>'
-}
-
 function storageAvailable(type) {
   try {
       var storage = window[type],
-      x = '__storage_test__';
+          x = '__storage_test__';
       storage.setItem(x, x);
       storage.removeItem(x);
       return true;
@@ -164,12 +114,26 @@ else {
   console.log(`Can't Save!`);
 }
 
+function flash(msg) {
+  let flashMsg = document.getElementById('flash');
+  flashMsg.innerHTML = msg;
+  flashMsg.style.top = '15px';
+  flashMsg.style.opacity = '1';
+  setTimeout(() => {
+    flashMsg.style.top = '-50px';
+    flashMsg.style.opacity = '0';
+  }, 3000);
+}
+
 // Writes to the event window
 function eventWrite(msg) {
   document.getElementById('consoleText').innerHTML += `<p>$ Sol ${sol}: ${msg}</p>`;
 }
 
 let wasChanged = false;
+let holdPop = population.rate;
+let holdRes = research.rate;
+let holdCreds = credits.rate;
 // Adds Resources
 function addResources() {
   let lowEnergy = energy.cap / 10;
@@ -183,9 +147,12 @@ function addResources() {
   if (energy.value < lowEnergy) {
     // Prints alert once and won't print again until energy re-drops below lowEnergy
     if (!wasChanged) {
-      research.tmpChange(0, 1000)
-      population.tmpChange(0, 1000);
-      credits.tmpChange(credits.rate / 2, 1000);
+      holdPop = population.rate;
+      holdRes = research.rate;
+      holdCreds = credits.rate;
+      research.rate = 0;
+      population.rate = 0;
+      credits.rate = holdCreds / 2;
       alertTxt('low energy');
       wasChanged = true;
     }
@@ -193,6 +160,11 @@ function addResources() {
   }
   // If energy rises back above lowEnergy
   if (energy.value > lowEnergy) {
+    if (wasChanged) {
+      research.rate = holdRes;
+      population.rate = holdPop;
+      credits.rate = holdCreds;
+    }
     wasChanged = false;
     document.documentElement.style.setProperty('--color2', '#D7D7D7');
   }
@@ -272,6 +244,7 @@ function buy(item) {
     research.rate += item.rates.research;
     population.rate += item.rates.population;
 
+    // Increment Buy Counter
     items.items[item.id]++;
 
     energy.cap += item.caps.energy;
@@ -294,6 +267,7 @@ function upgrade(item) {
     research.rate *= item.effects.research;
     population.rate *= item.effects.population;
 
+    // Increment Upgrade Counter
     items.upgrades[item.id]++;
 
     showCredits.innerHTML = Math.floor(credits.value);
@@ -313,12 +287,25 @@ document.getElementById('buyLab').addEventListener('click', () => buy(labVals));
 document.getElementById('buyPad').addEventListener('click', () => buy(padVals));;
 document.getElementById('upgradeBattery').addEventListener('click', () => upgrade(upgradeBattery));
 
+document.getElementById('save').addEventListener('click', () => {
+  populateStorage();
+  flash('Save Successful!');
+});
+document.getElementById('reset').addEventListener('click', () => {
+  if (window.confirm('Are you sure you want to reset all values?')) {
+    localStorage.clear();
+    flash('Game Reset: Refresh page to start over!');
+    window.location.reload();
+  }
+});
+
 /**************** Intervals ****************/
 
 // Interval runs each second
 // Resource gain
 setInterval(() => {
   addResources();
+  resourceTips();
 }, 1000)
 
 // Sol Interval
@@ -369,3 +356,4 @@ showCredits.innerHTML = Math.floor(credits.value);
 showResearch.innerHTML = research.value;
 showEnergy.innerHTML = `${Math.floor(energy.value)} / ${energy.cap}`;
 showPopulation.innerHTML = `${population.value} / ${population.cap}`;
+document.getElementById('sol').innerHTML = `Sol ${sol}`;
